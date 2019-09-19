@@ -11,5 +11,12 @@ var vm = new Vue({
 }).$mount('#app')
 
 vm.data = {
-
+  teams: [
+    "Adler Mannheim",
+    "Redbull München",
+    "Eisbären Berlin",
+    "Kölner Haie",
+    "Schwenninger Wildwings",
+    "Huskies Kassel"
+  ]
 }

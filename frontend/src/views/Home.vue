@@ -16,12 +16,3 @@
     <olap-filter title="Test" :active="true" />
   </div>
 </template>
-
-<script>
-import OlapFilter from "../components/Filter.vue";
-export default {
-  components: {
-    "olap-filter": OlapFilter
-  }
-};
-</script>

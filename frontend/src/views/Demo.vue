@@ -77,6 +77,8 @@
                     
                     <div class="filters">
                         <h3>Team</h3>
+                        <olap-filter v-for="team in teams" :title="team" active="false"/>
+
                         <div class="filteritem" active="true">Adler Mannheim</div>
                         <div class="filteritem">Redbull München</div>
                         <div class="filteritem">Eisbären Berlin</div>
@@ -106,3 +108,12 @@
         </div>
     </div>
 </template>
+
+<script>
+import OlapFilter from "../components/Filter.vue";
+export default {
+  components: {
+    "olap-filter": OlapFilter
+  }
+};
+</script>

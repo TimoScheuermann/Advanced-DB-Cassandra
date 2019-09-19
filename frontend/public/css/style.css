@@ -52,21 +52,21 @@ a:hover {
 }
 
 .navbar * {
-  display: inline-block;
   line-height: 40px;
 }
 
-.navbar a .title {
-  float: left;
+.navbar .title {
+  display: inline-block;
   font-weight: 600;
-  width: 100px;
+  float: left;
+  color: #fff;
 }
 
 .navbar .items {
   width: 1fr;
   padding: 0px 20px;
-  text-align: right;
-  display: block;
+  float: right;
+  display: inline-block;
 }
 
 .navbar .items .item {
@@ -76,7 +76,7 @@ a:hover {
   margin: 0 10px;
 }
 
-.navbar .items .item:hover, .navbar .items [active] {
+.navbar .items .item:hover, .navbar .items .router-link-active {
   opacity: .7;
 }
 

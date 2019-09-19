@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <div class="navbar">
+      
       <router-link class="title" to="home">NHL Stats</router-link>
+        
       <div class="items">
         <router-link class="item" to="home" active>Home</router-link>
         <router-link class="item" to="demo">Demo</router-link>

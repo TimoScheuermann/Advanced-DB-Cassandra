@@ -49,21 +49,21 @@ a {
     backdrop-filter: blur(7px);
 
     * {
-        display: inline-block;
         line-height: 40px;
     }
 
-    a .title {
-        float: left;
+    .title {
+        display: inline-block;
         font-weight: 600;
-        width: 100px;
+        float: left;
+        color: #fff;
     }
 
     .items {
         width: 1fr;
         padding: 0px 20px;
-        text-align: right;
-        display: block;
+        float: right;
+        display: inline-block;
 
         .item {
             color: white;
@@ -71,7 +71,7 @@ a {
             opacity: 1;
             margin: 0 10px;
         }
-        .item:hover, [active] {
+        .item:hover, .router-link-active {
             opacity: .7;
         }
     }
