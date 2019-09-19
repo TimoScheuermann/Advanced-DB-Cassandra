@@ -1,0 +1,434 @@
+@import url("../fonts/fontfaces.css");
+@media only screen and (max-width: 778px) {
+  .pdf:before {
+    content: "PDF" !important;
+  }
+  .pdf {
+    margin-top: -20px;
+    right: 30px;
+  }
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'SF Pro Display', sans-serif;
+}
+
+body {
+  background-color: #f0f0f0;
+  color: #444;
+  height: 100vh;
+  min-height: 100vh;
+}
+
+a {
+  color: #08f;
+  text-decoration: none;
+  -webkit-transition: .2s ease;
+  transition: .2s ease;
+}
+
+a:hover {
+  -webkit-box-shadow: inset 0px -1px #08f;
+          box-shadow: inset 0px -1px #08f;
+}
+
+.navbar {
+  z-index: 1000;
+  top: 0;
+  position: -webkit-sticky;
+  position: sticky;
+  display: block;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  width: 1fr;
+  padding: 0px 10px;
+  height: 40px;
+  cursor: pointer;
+  text-align: center;
+  -webkit-backdrop-filter: blur(7px);
+          backdrop-filter: blur(7px);
+}
+
+.navbar * {
+  display: inline-block;
+  line-height: 40px;
+}
+
+.navbar a .title {
+  float: left;
+  font-weight: 600;
+  width: 100px;
+}
+
+.navbar .items {
+  width: 1fr;
+  padding: 0px 20px;
+  text-align: right;
+  display: block;
+}
+
+.navbar .items .item {
+  color: white;
+  display: inline-block;
+  opacity: 1;
+  margin: 0 10px;
+}
+
+.navbar .items .item:hover, .navbar .items [active] {
+  opacity: .7;
+}
+
+.landing {
+  text-align: center;
+  margin: 100px 0px;
+}
+
+.landing h1, .landing h2 {
+  margin: 0;
+  padding: 0;
+}
+
+.landing h1 {
+  font-weight: 700;
+}
+
+.landing h2 {
+  font-weight: 650;
+  color: #555;
+}
+
+.landing h2:before, .landing h2:after {
+  content: '\23AF';
+  padding: 0 10px;
+}
+
+.paragraph {
+  background: #fff;
+  padding: 10px 50px;
+  margin: 20px;
+}
+
+.paragraph h1 {
+  text-align: center;
+}
+
+.paragraph p {
+  text-align: justify;
+}
+
+.paragraph .pdf, .paragraph .add {
+  position: absolute;
+  right: 60px;
+  display: inline-block;
+  background: #08f;
+  color: #fff;
+  margin-top: 5px;
+  font-weight: 500;
+  -webkit-box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+          box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.paragraph .pdf:hover, .paragraph .add:hover {
+  -webkit-filter: brightness(110%);
+          filter: brightness(110%);
+}
+
+.paragraph .pdf {
+  font-size: .5em;
+  line-height: 1em;
+  border-radius: 20px;
+  padding: 5px 20px;
+}
+
+.paragraph .pdf:before {
+  content: "Download";
+}
+
+.paragraph .add {
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+}
+
+.paragraph .add:before, .paragraph .add:after {
+  position: absolute;
+  content: "";
+  width: 1px;
+  height: 30px;
+  background: #fff;
+  margin-left: 14.5px;
+}
+
+.paragraph .add:before {
+  -webkit-transform: rotate(90deg) scale(0.6);
+          transform: rotate(90deg) scale(0.6);
+}
+
+.paragraph .add:after {
+  -webkit-transform: rotate(0deg) scale(0.6);
+          transform: rotate(0deg) scale(0.6);
+}
+
+.paragraph .team {
+  text-align: center;
+  margin-bottom: 10px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.paragraph .team .member {
+  display: inline-block;
+  margin: 10px;
+  width: 200px;
+  background: #fff;
+  -webkit-box-shadow: 2px 4px 10px #ccc;
+          box-shadow: 2px 4px 10px #ccc;
+  padding: 20px;
+  font-weight: 600;
+  -webkit-user-select: text;
+     -moz-user-select: text;
+      -ms-user-select: text;
+          user-select: text;
+}
+
+.paragraph .filter-list {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.paragraph .filter-list [team]::before, .paragraph .filter-list [season]::before, .paragraph .filter-list [destination]::before, .paragraph .filter-list [player]::before {
+  font-weight: 700;
+  color: #666;
+  position: absolute;
+  font-size: .8em;
+  margin-top: -3px;
+}
+
+.paragraph .filter-list [team]::before {
+  content: "Team";
+}
+
+.paragraph .filter-list [season]::before {
+  content: "Season";
+}
+
+.paragraph .filter-list [player]::before {
+  content: "Player";
+}
+
+.paragraph .filter-list [destination]::before {
+  content: "Destination";
+}
+
+.paragraph .filter-list .filter {
+  display: inline-block;
+  -webkit-box-shadow: 2px 4px 10px #ccc;
+          box-shadow: 2px 4px 10px #ccc;
+  background: #fff;
+  padding: 7px 10px;
+  height: 20px;
+  line-height: 12px;
+  border-radius: 15px;
+  min-width: 90px;
+  font-size: .8em;
+  margin: 5px;
+  margin-bottom: 10px;
+}
+
+.paragraph .filter-list .filter .name {
+  display: inline-block;
+  margin-right: 10px;
+  margin-left: 5px;
+}
+
+.paragraph .filter-list .filter .remove {
+  display: inline-block;
+  background: #ccc;
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  float: right;
+  cursor: pointer;
+}
+
+.paragraph .filter-list .filter .remove:before, .paragraph .filter-list .filter .remove:after {
+  position: absolute;
+  content: "";
+  width: 1px;
+  height: 20px;
+  background: #222;
+  margin-left: 9.5px;
+}
+
+.paragraph .filter-list .filter .remove:before {
+  -webkit-transform: rotate(45deg) scale(0.6);
+          transform: rotate(45deg) scale(0.6);
+}
+
+.paragraph .filter-list .filter .remove:after {
+  -webkit-transform: rotate(-45deg) scale(0.6);
+          transform: rotate(-45deg) scale(0.6);
+}
+
+.paragraph .filter-list .filter .remove:hover {
+  -webkit-filter: brightness(90%);
+          filter: brightness(90%);
+}
+
+.paragraph table {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: left;
+}
+
+.paragraph table tr:not(:last-child) {
+  border-bottom: 1px solid #888;
+}
+
+.overlay {
+  display: none;
+  background: rgba(0, 0, 0, 0.5);
+  -webkit-backdrop-filter: blur(3px);
+          backdrop-filter: blur(3px);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  z-index: 2000;
+}
+
+.overlay .head {
+  z-index: 3000;
+  position: absolute;
+  top: 20px;
+  width: 75%;
+  left: calc(25% / 2);
+  background: #fff;
+}
+
+.overlay .head h1 {
+  text-align: center;
+}
+
+.overlay .head .close {
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+  position: absolute;
+  font-size: 38px;
+  line-height: 40px;
+  text-align: center;
+  -webkit-transition: .1s ease;
+  transition: .1s ease;
+  cursor: pointer;
+}
+
+.overlay .head .close:before, .overlay .head .close:after {
+  position: absolute;
+  content: "";
+  width: 1px;
+  height: 40px;
+  background: #222;
+}
+
+.overlay .head .close:before {
+  -webkit-transform: rotate(45deg) scale(0.6);
+          transform: rotate(45deg) scale(0.6);
+}
+
+.overlay .head .close:after {
+  -webkit-transform: rotate(-45deg) scale(0.6);
+          transform: rotate(-45deg) scale(0.6);
+}
+
+.overlay .content {
+  overflow: auto;
+  position: absolute;
+  width: 75%;
+  height: calc(100% - 100px);
+  top: calc(50% + 40px);
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  background: #fff;
+  z-index: 3001;
+}
+
+.filters {
+  display: inline-flexbox;
+  width: 100%;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-item-align: center;
+      align-self: center;
+}
+
+.filters h3 {
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+}
+
+.filters .filteritem {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  background: #eee;
+  margin: 5px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  cursor: pointer;
+}
+
+.filters .filteritem:hover {
+  -webkit-box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+          box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.filters [active="true"] {
+  background: #08f !important;
+  color: #fff;
+  -webkit-box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+          box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  border-radius: 4px;
+  -webkit-transition: .2s ease;
+  transition: .2s ease;
+}
+
+::-webkit-scrollbar:hover {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #aaa;
+  border-radius: 4px;
+  -webkit-transition: .2s ease;
+  transition: .2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #888;
+  -webkit-transition: .2s ease;
+  transition: .2s ease;
+  cursor: -webkit-grabbing;
+  cursor: grabbing;
+}
+/*# sourceMappingURL=style.css.map */
