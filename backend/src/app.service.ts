@@ -3,7 +3,8 @@ import { Client, auth } from 'cassandra-driver';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
+
+  getQueryResults(query, vars = []): Object {
 
     const client = new Client({
       contactPoints: ["127.0.0.1"],
@@ -11,17 +12,18 @@ export class AppService {
       keyspace: "a"
     });
 
-    client.connect(() => { return "Cassy is am Start"; });
+    client.connect(() => {
+      console.log("Cassy connected!");   
+      client.execute(query, vars, (err, res) => {
+        return err ? { error: "Fehler im Query", query: query, variables: vars } : res.rows;
+      });
 
-    const query = "SELECT * FROM inf";
-    //const query = "INSERT INTO inf (num,txt) VALUES (3,'drei')";
-
-    client.execute(query, [], (err, res) => {
-      return ((err ? "FEHLER" : res));
     });
-
-    return "spmething went wrong";
-
+    
+    return { error: "Konnte keine Verbindung zur Datenbank aufbauen" };
   }
 
 }
+
+    //const query = "SELECT * FROM inf";
+    //const query = "INSERT INTO inf (num,txt) VALUES (3,'drei')";
