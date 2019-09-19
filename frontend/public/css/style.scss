@@ -175,8 +175,9 @@ a {
         display: block;
         margin-bottom: 10px;
 
-        [team], [season], [destination], [player] {
+        [category] {
             &::before {
+                content: attr(category);
                 font-weight: 700;
                 color: #666;
                 position: absolute;
@@ -184,11 +185,6 @@ a {
                 margin-top: -3px;
             }
         }
-        [team]::before { content: "Team"; }
-        [season]::before { content: "Season"; }
-        [player]::before { content: "Player"; }
-        [destination]::before { content: "Destination"; }
-
         .filter {
             display: inline-block;
             box-shadow: 2px 4px 10px #ccc;

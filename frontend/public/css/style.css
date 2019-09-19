@@ -201,28 +201,13 @@ a:hover {
   margin-bottom: 10px;
 }
 
-.paragraph .filter-list [team]::before, .paragraph .filter-list [season]::before, .paragraph .filter-list [destination]::before, .paragraph .filter-list [player]::before {
+.paragraph .filter-list [category]::before {
+  content: attr(category);
   font-weight: 700;
   color: #666;
   position: absolute;
   font-size: .8em;
   margin-top: -3px;
-}
-
-.paragraph .filter-list [team]::before {
-  content: "Team";
-}
-
-.paragraph .filter-list [season]::before {
-  content: "Season";
-}
-
-.paragraph .filter-list [player]::before {
-  content: "Player";
-}
-
-.paragraph .filter-list [destination]::before {
-  content: "Destination";
 }
 
 .paragraph .filter-list .filter {

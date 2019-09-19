@@ -6,40 +6,17 @@
     </div>
 
     <div class="paragraph">
-      <h2>
-        Filter
-        <div
-          class="add"
-          title="Filter hinzufügen"
-          onclick="document.getElementById('overlay').setAttribute('style','display:block');"
-        ></div>
+      <h2>Filter 
+        <div class="add" title="Filter hinzufügen" onclick="document.getElementById('overlay').setAttribute('style','display:block');"></div>
       </h2>
+
       <div class="filter-list">
-        <div class="filter">
-          <div class="name" season>
-            <br />2018/19
-          </div>
-          <div class="remove"></div>
-        </div>
-        <div class="filter">
-          <div class="name" team>
-            <br />Adler Mannheim
-          </div>
-          <div class="remove"></div>
-        </div>
-        <div class="filter">
-          <div class="name" player>
-            <br />Tim Stützle
-          </div>
-          <div class="remove"></div>
-        </div>
-        <div class="filter">
-          <div class="name" destination>
-            <br />Away
-          </div>
-          <div class="remove"></div>
-        </div>
+        <active-filter v-for="(season, index) in seasons" :key="index" category="Season" :title="season.name" :active="season.active"/>
+        <active-filter v-for="(team, index) in teams" :key="index" category="Team" :title="team.name" :active="team.active"/>
+        <active-filter v-for="(desintation, index) in desintations" :key="index" category="Destination" :title="desintation.name" :active="desintation.active"/>
+        <active-filter v-for="(player, index) in players" :key="index" category="Player" :title="player.name" :active="player.active"/>
       </div>
+
     </div>
 
     <div class="paragraph">
@@ -82,39 +59,24 @@
         <div class="paragraph" style="margin-top: 0;">
           <div class="filters">
             <h3>Season</h3>
-            <div class="filteritem" active="true">2018/19</div>
-            <div class="filteritem">2019/20</div>
-            <div class="filteritem">2020/21</div>
-            <div class="filteritem">2021/22</div>
+            <olap-filter v-for="(season, index) in seasons" :key="index" :title="season.name" :active="season.active"/>
           </div>
 
           <div class="filters">
             <h3>Team</h3>
-            <olap-filter v-for="(team, index) in teams" :key="index" :title="team" active="false" />
-
-            <div class="filteritem" active="true">Adler Mannheim</div>
-            <div class="filteritem">Redbull München</div>
-            <div class="filteritem">Eisbären Berlin</div>
-            <div class="filteritem">Kölner Haie</div>
-            <div class="filteritem">Schwenninger Wildwings</div>
-            <div class="filteritem">Huskies Kassel</div>
+            <olap-filter v-for="(team, index) in teams" :key="index" :title="team.name" :active="team.active"/>
+          </div>
+          
+          <div class="filters">
+            <h3>Destination</h3>
+            <olap-filter v-for="(desintation, index) in desintations" :key="index" :title="desintation.name" :active="desintation.active"/>
           </div>
 
           <div class="filters">
             <h3>Spieler</h3>
-            <div class="filteritem">Dennis Endras</div>
-            <div class="filteritem">David Wolf</div>
-            <div class="filteritem" active="true">Tim Stützle</div>
-            <div class="filteritem">Marcel Goc</div>
-            <div class="filteritem">Glen Metropolit</div>
-            <div class="filteritem">Hans Zach</div>
+            <olap-filter v-for="(player, index) in players" :key="index" :title="player.name" :active="player.active"/>
           </div>
 
-          <div class="filters">
-            <h3>Destination</h3>
-            <div class="filteritem">Home</div>
-            <div class="filteritem" active="true">Away</div>
-          </div>
         </div>
       </div>
     </div>
@@ -122,20 +84,97 @@
 </template>
 
 <script>
+
 import OlapFilter from "../components/Filter.vue";
+import ActiveFilter from "../components/ActiveFilter.vue";
+
 export default {
   components: {
-    "olap-filter": OlapFilter
+    "olap-filter": OlapFilter,
+    "active-filter": ActiveFilter
   },
   data() {
     return {
       teams: [
-        "Adler Mannheim",
-        "Redbull München",
-        "Eisbären Berlin",
-        "Kölner Haie",
-        "Schwenninger Wildwings",
-        "Huskies Kassel"
+          {
+              name: "Adler Mannheim",
+              active: true
+          },
+          {
+              name: "Redbull München",
+              active: false
+          },
+          {
+              name: "Eisbären Berlin",
+              active: false
+          },
+          {
+              name: "Schwenninger Wildwings",
+              active: false
+          },
+          {
+              name: "Huskies Kassel",
+              active: false
+          },
+          {
+              name: "Kölner Haie",
+              active: false
+          }
+      ],
+      seasons: [
+          {
+              name: "2018/19",
+              active: true
+          },
+          {
+              name: "2019/20",
+              active: false
+          },
+          {
+              name: "2020/21",
+              active: false
+          },
+          {
+              name: "2021/22",
+              active: false
+          }
+      ],
+      desintations: [
+          {
+              name: "Home",
+              active: true
+          },
+          {
+              name: "Away",
+              active: false
+          }
+      ],
+      players: [
+          {  
+            name: "Moritz Müller",
+            active: false,
+            team: "Kölner Haie"
+          },
+          {  
+            name: "Dennis Endras",
+            active: false,
+            team: "Adler Mannheim"
+          },
+          {  
+            name: "David Wolf",
+            active: false,
+            team: "Adler Mannheim"
+          },
+          {  
+            name: "Tim Stützle",
+            active: true,
+            team: "Adler Mannheim"
+          },
+          {  
+            name: "Marcel Goc",
+            active: true,
+            team: "Adler Mannheim"
+          }
       ]
     };
   }
