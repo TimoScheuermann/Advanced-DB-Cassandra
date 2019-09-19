@@ -22,6 +22,6 @@ async function bootstrap() {
       templates: join(__dirname, '..', 'views'),
   });
 
-  await app.listen(80);
+  await app.listen(3000);
 }
 bootstrap();

@@ -3,7 +3,7 @@ import { Client, auth } from 'cassandra-driver';
 
 @Injectable()
 export class AppService {
-  getHello() {
+  getHello(): string {
 
     const client = new Client({
       contactPoints: ["127.0.0.1"],
@@ -11,15 +11,16 @@ export class AppService {
       keyspace: "a"
     });
 
-    client.connect(() => console.log("Cassy is am Start"));
+    client.connect(() => { return "Cassy is am Start"; });
 
     const query = "SELECT * FROM inf";
     //const query = "INSERT INTO inf (num,txt) VALUES (3,'drei')";
 
     client.execute(query, [], (err, res) => {
-      console.log((err ? "FEHLER" : res));
-      if(!err) console.log(res.rows);
+      return ((err ? "FEHLER" : res));
     });
+
+    return "spmething went wrong";
 
   }
 

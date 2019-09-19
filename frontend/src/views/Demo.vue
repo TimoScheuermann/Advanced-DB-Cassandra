@@ -23,27 +23,12 @@
       <h2>Ergebnis</h2>
 
       <table>
-        <tr>
-          <th>A</th>
-          <th>B</th>
-          <th>. . . ?</th>
-        </tr>
-        <tr>
-          <td>C</td>
-          <td>D</td>
-          <td>E</td>
-        </tr>
-        <tr>
-          <td>C</td>
-          <td>D</td>
-          <td>E</td>
-        </tr>
-        <tr>
-          <td>C</td>
-          <td>D</td>
-          <td>E</td>
-        </tr>
+        <tr><th>A</th><th>B</th><th>. . . ?</th></tr>
+        <tr><td>C</td><td>D</td><td>E</td></tr>
+        <tr><td>C</td><td>D</td><td>E</td></tr>
+        <tr><td>C</td><td>D</td><td>E</td></tr>
       </table>
+      
     </div>
 
     <div class="overlay" id="overlay">
@@ -92,6 +77,8 @@ export default {
   components: {
     "olap-filter": OlapFilter,
     "active-filter": ActiveFilter
+  },
+  methods: {
   },
   data() {
     return {

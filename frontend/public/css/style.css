@@ -58,6 +58,7 @@ a:hover {
 .navbar .title {
   display: inline-block;
   font-weight: 600;
+  margin: 0 10px;
   float: left;
   color: #fff;
 }
