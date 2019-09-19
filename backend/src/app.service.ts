@@ -1,29 +1,40 @@
-import { Injectable } from '@nestjs/common';
-import { Client, auth } from 'cassandra-driver';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Client, types } from 'cassandra-driver';
 
 @Injectable()
 export class AppService {
+  public client: Client;
 
-  getQueryResults(query, vars = []): Object {
-
-    const client = new Client({
-      contactPoints: ["127.0.0.1"],
-      localDataCenter: "datacenter1",
-      keyspace: "a"
+  constructor() {
+    this.client = new Client({
+      contactPoints: ['127.0.0.1'],
+      localDataCenter: 'datacenter1',
+      keyspace: 'a',
     });
-
-    client.connect(() => {
-      console.log("Cassy connected!");   
-      client.execute(query, vars, (err, res) => {
-        return err ? { error: "Fehler im Query", query: query, variables: vars } : res.rows;
-      });
-
-    });
-    
-    return { error: "Konnte keine Verbindung zur Datenbank aufbauen" };
   }
 
+  private async cassyHelper(query: string, vars: any) {
+    return new Promise((resolve: (res: types.ResultSet) => void, reject) => {
+      this.client.execute(query, vars, (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
+      });
+    });
+  }
+
+  public async getQueryResults(query, vars = []): Promise<Object> {
+    await this.client.connect();
+
+    try {
+      const res = await this.cassyHelper(query, vars);
+      return res.rows;
+    } catch (error) {
+      return new InternalServerErrorException('Fehler im Query');
+    }
+  }
 }
 
-    //const query = "SELECT * FROM inf";
-    //const query = "INSERT INTO inf (num,txt) VALUES (3,'drei')";
+//const query = "SELECT * FROM inf";
+//const query = "INSERT INTO inf (num,txt) VALUES (3,'drei')";
