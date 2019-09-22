@@ -9,7 +9,8 @@
   }
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   font-family: 'SF Pro Display', sans-serif;
@@ -67,7 +68,8 @@ a:hover {
   margin: 100px 0px;
 }
 
-.landing h1, .landing h2 {
+.landing h1,
+.landing h2 {
   margin: 0;
   padding: 0;
 }
@@ -135,6 +137,14 @@ a:hover {
 
 .function .example .code b {
   color: #666;
+}
+
+.function .example .code b:before {
+  content: "<";
+}
+
+.function .example .code b:after {
+  content: ">";
 }
 
 .function .example .exmpl a:before {

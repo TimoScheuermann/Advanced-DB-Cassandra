@@ -9,7 +9,7 @@ export class AppService {
     this.client = new Client({
       contactPoints: ['127.0.0.1'],
       localDataCenter: 'datacenter1',
-      keyspace: 'a',
+      keyspace: 'nhl_stats',
     });
   }
 

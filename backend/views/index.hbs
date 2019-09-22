@@ -1,32 +1,39 @@
 <!DOCTYPE html>
 <html lang="de">
-	<head>
-		<title>Cassandra | Backend</title>
-        <meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
-        <link type="text/css" rel="stylesheet" href="public/css/style.css">
-    </head>
-    <body>
 
-        <div class="navbar">
-            <div class="title" onclick="window.location.href='home'">NHL Stats</div>
-        </div>
+<head>
+    <title>Cassandra | Backend</title>
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+    <link type="text/css" rel="stylesheet" href="public/css/style.css">
+    <link rel="shortcut icon" href="public/logo.png" type="image/x-icon">
+</head>
 
-        <div class="landing">
-            <h1>Advanced Databases</h1>
-            <h2>Cassandra Backend</h2>
-        </div>
+<body>
 
-        <div class="paragraph">
-            <h2>Backend von Cassandra</h2>
-            <p>Willkommen auf dem Backend Server von Cassandra. Wenn du hier falsch sein solltest, da du eigentlich zum Frontend wolltest, kannst du einfach auf den folgenden Link klicken :) <a href="http://localhost:8080">Zum Frontend</a></p>
-        </div>
+    <div class="navbar">
+        <div class="title" onclick="window.location.href='home'">NHL Stats</div>
+    </div>
 
-        <div class="paragraph" style="text-align: center" id="functions">
-            <h1>How to</h1>
-        </div>
+    <div class="landing">
+        <h1>Advanced Databases</h1>
+        <h2>Cassandra Backend</h2>
+    </div>
 
-    </body>
+    <div class="paragraph">
+        <h2>Backend von Cassandra</h2>
+        <p>Willkommen auf dem Backend Server von Cassandra. Wenn du hier falsch sein solltest, da du eigentlich zum
+            Frontend wolltest, kannst du einfach hier klicken um <a href="http://localhost:8080">zum Frontend</a> zu
+            gelangen</p>
+    </div>
+
+    <div class="paragraph" style="text-align: center" id="functions">
+        <h1>How to</h1>
+    </div>
+
+</body>
+
 </html>
 
 <script>
@@ -53,9 +60,9 @@
             example: "http://localhost:3000/get/destinations"
         },
         {
-            description: "Alle Teams auslesen",
-            code: "localhost:3000/get/teams/<b>season</b>",
-            example: "http://localhost:3000/get/teams/201819"
+            description: "Einen Spieler finden",
+            code: "localhost:3000/find/player/<b>player</b>",
+            example: "http://localhost:3000/find/player/Plachta"
         },
         {
             description: "Alle Teams auslesen",
@@ -186,11 +193,11 @@
 
     functions.forEach(func => {
         var el = document.getElementById("functions");
-        el.innerHTML += 
-            "<div class='function'><div class='description'>"+func.description+"</div>"
-                + "<div class='example'>"
-                + "<div class='code'>"+func.code+"</div>"
-                + "<div class='exmpl'><a href='"+func.example+"'></a></div>"
+        el.innerHTML +=
+            "<div class='function'><div class='description'>" + func.description + "</div>"
+            + "<div class='example'>"
+            + "<div class='code'>" + func.code + "</div>"
+            + "<div class='exmpl'><a href='" + func.example + "'></a></div>"
             + "</div></div>";
     });
 
