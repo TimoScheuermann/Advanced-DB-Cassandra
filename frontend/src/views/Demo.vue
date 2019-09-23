@@ -28,21 +28,22 @@
       </h2>
 
       <div class="filter-list">
-        <active-filter
+        <!-- <active-filter
           v-for="(season, index) in seasons"
           :key="index"
           category="Season"
           :title="season.name"
           :active="season.active"
-        />
+        />-->
         <active-filter
-          v-for="(team, index) in teams"
-          :key="index"
+          v-for="team in teams"
+          :key="team.__id"
           category="Team"
           :title="team.name"
           :active="team.active"
+          @click="setActive(team.__id, 'teams')"
         />
-        <active-filter
+        <!-- <active-filter
           v-for="(desintation, index) in desintations"
           :key="index"
           category="Destination"
@@ -54,13 +55,13 @@
           :key="index"
           category="Player"
           :title="player.name"
-          :active="player.active"
-        />
+        :active="player.active"
+        />-->
       </div>
     </div>
 
     <div class="paragraph">
-      <h2>Ergebnis</h2>
+      <h2>Anzahl der gefundenen Tore</h2>
 
       <table>
         <tr>
@@ -97,7 +98,7 @@
 
       <div class="content">
         <div class="paragraph" style="margin-top: 0;">
-          <div class="filters">
+          <!--          <div class="filters">
             <h3>Season</h3>
             <olap-filter
               v-for="(season, index) in seasons"
@@ -106,19 +107,30 @@
               :active="season.active"
             />
           </div>
-
+          -->
           <div class="filters">
             <h3>Team</h3>
             <olap-filter
-              v-for="(team, index) in teams"
-              :key="index"
+              v-for="team in teams"
+              :key="team.__id"
               :title="team.name"
               :active="team.active"
+              @click="setActive(team.__id, 'teams')"
+            />
+          </div>
+          <!--
+          <div class="filters" style="width: 45%; display: inline-block; margin-right: 10%">
+            <h3>Destination</h3>
+            <olap-filter
+              v-for="(desintation, index) in desintations"
+              :key="index"
+              :title="desintation.name"
+              :active="desintation.active"
             />
           </div>
 
-          <div class="filters">
-            <h3>Destination</h3>
+          <div class="filters" style="width: 45%; display: inline-block;">
+            <h3>Type</h3>
             <olap-filter
               v-for="(desintation, index) in desintations"
               :key="index"
@@ -140,7 +152,7 @@
 
             <h4>Spieler finden</h4>
             <form>
-              <input type="text" placeholder="Plachta" name id />
+              <input type="text" placeholder="z.B.: Plachta, Goc, Hecht" name id />
               <input type="submit" value="Suchen" />
             </form>
 
@@ -158,7 +170,7 @@
                 :active="false"
               />
             </div>
-          </div>
+          </div>-->
         </div>
       </div>
     </div>
@@ -174,38 +186,12 @@ export default {
     "olap-filter": OlapFilter,
     "active-filter": ActiveFilter
   },
-  methods: {},
   data() {
     return {
       nothingFound: true,
       backendConnected: true,
       cassandraRunning: true,
-      teams: [
-        {
-          name: "Adler Mannheim",
-          active: true
-        },
-        {
-          name: "Redbull München",
-          active: false
-        },
-        {
-          name: "Eisbären Berlin",
-          active: false
-        },
-        {
-          name: "Schwenninger Wildwings",
-          active: false
-        },
-        {
-          name: "Huskies Kassel",
-          active: false
-        },
-        {
-          name: "Kölner Haie",
-          active: false
-        }
-      ],
+      teams: [],
       seasons: [
         {
           name: "2018/19",
@@ -234,6 +220,7 @@ export default {
           active: false
         }
       ],
+      gametypes: [],
       players: [
         {
           name: "Moritz Müller",
@@ -262,6 +249,36 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    setActive(id, property) {
+      this[property] = this[property].map(x => {
+        if (x.__id === id) {
+          x.active = !x.active;
+        }
+        return x;
+      });
+    }
+  },
+  async created() {
+    const {
+      data: { teamResults }
+    } = await this.$axios.get("/get/teams");
+    this.teams = teamResults.map(x => ({
+      ...x,
+      active: false,
+      name: `${x.shortname} ${x.teamname}`,
+      __id: x.team_id
+    }));
+
+    const {
+      data: { typeResults }
+    } = await this.$$axios.get("/get/gametypes");
+    this.gametypes = typeResults.map(d => ({
+      ...d,
+      active: false,
+      __id: d.type_id
+    }));
   }
 };
 </script>

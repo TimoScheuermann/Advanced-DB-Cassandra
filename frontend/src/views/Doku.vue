@@ -14,22 +14,30 @@
 
         <div class="paragraph">
             <h1>Dokumentation<div class="pdf" title="Als PDF herunterladen"></div></h1>
-            
-            <h2>Einleitung</h2>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos magni error quia recusandae asperiores quis adipisci ipsa aut, dolorem, iste ex facilis quam iusto, quod neque blanditiis? Accusantium, iusto possimus.</p>
-            <h3>Ja und jetzt</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea, unde dolorem dicta necessitatibus quod explicabo vero doloremque consequatur nemo accusantium corrupti earum itaque, quaerat quibusdam? Obcaecati odit dolores dignissimos sint?</p>
-            <h4>und weiter...</h4>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nam quae blanditiis a consequuntur? Nesciunt molestiae sunt deserunt commodi quidem obcaecati incidunt praesentium ab perspiciatis voluptates. Assumenda numquam enim reiciendis cupiditate?</p>
-            <h2>Nächster Punkt</h2>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id, accusantium laudantium. Rem libero assumenda, dolor illum necessitatibus possimus corrupti, sit porro, voluptate sint ullam ex facilis explicabo magni ab et!
+            <h2>Apache Cassandra Datenbank</h2>
+            <h3>Allgemeines</h3>
+            <p>
                 <ul>
-                    <li>Na du schlingel nico</li>
-                    <li>hehe</li>
-                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore doloribus ex praesentium reprehenderit libero esse architecto, optio cumque totam ad, itaque dolore magni, alias harum explicabo ipsa temporibus exercitationem? Aliquid.</li>
+                    <li>NoSQL-Datenbank</li>
+                    <li>Spaltenorientierte Datenbank (wide-columns-store data base)</li>
+                    <li>Cassandra Query Language (CQL)</li>
                 </ul>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Culpa blanditiis magni quis libero dolores molestiae in quibusdam? Alias, quam porro commodi quae qui possimus quod reprehenderit est amet, inventore eum?
             </p>
+            <h3>Geschichte</h3>
+            <p>Apache Cassandra wurde bei Facebook entwickelt, um die Suche nach Direktnachrichten in der Inbox des Benutzers zu ermöglichen. Damit war von Anfang an ein Klientel für die Datenbank schon festgelegt - Soziale Netzwerke. Nachdem die Datenbank dann ein Apache Incubator Projekt wurde haben auch andere große Unternehmen, unter anderem Twitter oder IBM, daran beteiligt. Apache Incubator hilft Projekten auf ihrem Weg, ein Projekt der Apache Software Foundation zu werden. Dort existiert es jetzt immer noch als Open-Source-Projekt, wird aber auch von DataStax als Lösung an Unternehmen verkauft.</p>
+
+            <h3>Betrieb</h3>
+            <p>Der Betrieb einer Cassandra Datenbank findet in einem Cluster statt. Das heißt, dass viele einzelne Knoten (Nodes) ringförmig zusammengeschlossen werden. Dieser Ring hat keinen überlegenen Knoten - alle Knoten sind auf einem Niveau und haben alle die gleichen Rechte und Fähigkeiten. Folglich gibt es auch keinen "Single Point of Failure". Das heißt, dass der Ausfall eines Knotens nicht den Ausfall der gesamten Datenbank bedeutet. Dies ist zugleich einer der größten Vorteile der Cassandra Datenbank. Damit beim Ausfall eines Knotens trotzdem auf die Daten zugegriffen werden können, werden die Daten als Replikationen auf mehreren Knoten gespeichert.</p>
+        
+            <h3>Vorteile</h3>
+            <p>
+                <ul>
+                    <li>Kein "Single Point of Failure" -> hohe Ausfallsicherheit</li>
+                    <li>Verteilte Datenbank aufgrund der "gleichwertigen" Knoten</li>
+                    <li>Hohe Skalierbarkeit -> jeder neue Knoten bedeutet linear mehr Kapazität</li>
+                </ul>
+            </p>
+
         </div>
     </div>
 </template>

@@ -33,6 +33,16 @@ export class AppController {
     };
   }
 
+  @Get('get/gametypes')
+  gametypes() {
+    return {
+      results: [
+        { type_id: 0, name: 'Regular' },
+        { type_id: 1, name: 'PlayOffs' },
+      ],
+    };
+  }
+
   @Get('find/player/:key')
   async findPlayer(@Param('key') key: String) {
     return {
