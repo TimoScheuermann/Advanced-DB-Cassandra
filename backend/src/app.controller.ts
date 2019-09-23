@@ -7,7 +7,12 @@ export class AppController {
 
   @Get('get/destinations')
   destinations() {
-    return { results: ['away', 'home'] };
+    return {
+      results: [
+        { destination_id: 0, name: 'Home' },
+        { destination_id: 1, name: 'Away' },
+      ],
+    };
   }
 
   @Get('get/players')
@@ -38,7 +43,7 @@ export class AppController {
     return {
       results: [
         { type_id: 0, name: 'Regular' },
-        { type_id: 1, name: 'PlayOffs' },
+        { type_id: 1, name: 'Playoffs' },
       ],
     };
   }
@@ -50,7 +55,7 @@ export class AppController {
         'SELECT * FROM player_info WHERE firstname=? ALLOW FILTERING',
         [key],
       ),
-      lastname: await this.appService.getQueryResults(
+      lastnames: await this.appService.getQueryResults(
         'SELECT * FROM player_info WHERE lastname=? ALLOW FILTERING',
         [key],
       ),

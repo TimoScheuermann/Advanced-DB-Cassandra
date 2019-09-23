@@ -43,20 +43,33 @@
           :active="team.active"
           @click="setActive(team.__id, 'teams')"
         />
-        <!-- <active-filter
-          v-for="(desintation, index) in desintations"
-          :key="index"
-          category="Destination"
-          :title="desintation.name"
-          :active="desintation.active"
-        />
+
         <active-filter
-          v-for="(player, index) in players"
-          :key="index"
+          v-for="destination in destinations"
+          :key="destination.__id"
+          category="Destination"
+          :title="destination.name"
+          :active="destination.active"
+          @click="setActive(destination.__id, 'destinations')"
+        />
+
+        <active-filter
+          v-for="gametype in gametypes"
+          :key="gametype.__id"
+          category="Gametype"
+          :title="gametype.name"
+          :active="gametype.active"
+          @click="setActive(gametype.__id, 'gametypes')"
+        />
+
+        <active-filter
+          v-for="player in players"
+          :key="player.__id"
           category="Player"
           :title="player.name"
-        :active="player.active"
-        />-->
+          :active="player.active"
+          @click="setActive(player.__id, 'players')"
+        />
       </div>
     </div>
 
@@ -118,59 +131,64 @@
               @click="setActive(team.__id, 'teams')"
             />
           </div>
-          <!--
+
           <div class="filters" style="width: 45%; display: inline-block; margin-right: 10%">
             <h3>Destination</h3>
             <olap-filter
-              v-for="(desintation, index) in desintations"
-              :key="index"
-              :title="desintation.name"
-              :active="desintation.active"
+              v-for="destination in destinations"
+              :key="destination.__id"
+              :title="destination.name"
+              :active="destination.active"
+              @click="setActive(destination.__id, 'destinations')"
             />
           </div>
 
           <div class="filters" style="width: 45%; display: inline-block;">
-            <h3>Type</h3>
+            <h3>Gametype</h3>
             <olap-filter
-              v-for="(desintation, index) in desintations"
-              :key="index"
-              :title="desintation.name"
-              :active="desintation.active"
+              v-for="gametype in gametypes"
+              :key="gametype.__id"
+              :title="gametype.name"
+              :active="gametype.active"
+              @click="setActive(gametype.__id, 'gametypes')"
             />
           </div>
 
           <div class="filters">
             <h3>Spieler</h3>
 
-            <h4>Aktive Spieler</h4>
+            <h4>Verfügbare Spieler</h4>
             <olap-filter
-              v-for="(player, index) in players"
-              :key="index"
+              v-for="player in players"
+              :key="player.__id"
               :title="player.name"
               :active="player.active"
+              @click="setActive(player.__id, 'players')"
             />
 
             <h4>Spieler finden</h4>
-            <form>
-              <input type="text" placeholder="z.B.: Plachta, Goc, Hecht" name id />
+            <form @submit.prevent="findPlayer">
+              <input
+                v-model="playerQuery"
+                type="text"
+                placeholder="z.B.: Plachta, Goc, Hecht"
+                name
+                id
+              />
               <input type="submit" value="Suchen" />
             </form>
-
-            <h4>Ergebnisse</h4>
 
             <div
               v-if="nothingFound"
               class="error"
-            >Es konnte kein Spieler mit diesem Namen gefunden werden</div>
-            <div v-else>
-              <olap-filter
-                v-for="(player, index) in players"
-                :key="index"
-                :title="player.name"
-                :active="false"
-              />
-            </div>
-          </div>-->
+              style="margin-top: 10px;"
+            >Es konnte kein Spieler mit dem Namen "{{ playerQuery }}" gefunden werden</div>
+            <div
+              v-else-if="showQueryInfo"
+              class="info"
+              style="margin-top: 10px;"
+            >Bitte gib mindestens drei Zeichen ein</div>
+          </div>
         </div>
       </div>
     </div>
@@ -188,9 +206,11 @@ export default {
   },
   data() {
     return {
-      nothingFound: true,
+      nothingFound: false,
+      showQueryInfo: false,
       backendConnected: true,
       cassandraRunning: true,
+      playerQuery: "",
       teams: [],
       seasons: [
         {
@@ -210,44 +230,9 @@ export default {
           active: false
         }
       ],
-      desintations: [
-        {
-          name: "Home",
-          active: true
-        },
-        {
-          name: "Away",
-          active: false
-        }
-      ],
+      destinations: [],
       gametypes: [],
-      players: [
-        {
-          name: "Moritz Müller",
-          active: false,
-          team: "Kölner Haie"
-        },
-        {
-          name: "Dennis Endras",
-          active: false,
-          team: "Adler Mannheim"
-        },
-        {
-          name: "David Wolf",
-          active: false,
-          team: "Adler Mannheim"
-        },
-        {
-          name: "Tim Stützle",
-          active: true,
-          team: "Adler Mannheim"
-        },
-        {
-          name: "Marcel Goc",
-          active: true,
-          team: "Adler Mannheim"
-        }
-      ]
+      players: []
     };
   },
   methods: {
@@ -258,26 +243,63 @@ export default {
         }
         return x;
       });
+    },
+
+    async findPlayer() {
+      this.nothingFound = false;
+      this.showQueryInfo = false;
+
+      if (this.playerQuery.length < 3) {
+        this.showQueryInfo = true;
+        return;
+      }
+
+      let response = await this.$axios.get(`/find/player/${this.playerQuery}`);
+      let foundPlayers = [];
+
+      response.data.firstnames.forEach(x => foundPlayers.push(x));
+      response.data.lastnames.forEach(x => foundPlayers.push(x));
+
+      if (foundPlayers.length === 0) {
+        this.nothingFound = true;
+        this.showQueryInfo = false;
+        return;
+      }
+
+      foundPlayers.forEach(x => {
+        if (this.players.findIndex(p => p.player_id === x.player_id) === -1) {
+          this.players.push({
+            ...x,
+            active: false,
+            name: `${x.firstname} ${x.lastname}`,
+            __id: `player_${x.player_id}`
+          });
+        }
+      });
     }
   },
+
   async created() {
-    const {
-      data: { teamResults }
-    } = await this.$axios.get("/get/teams");
-    this.teams = teamResults.map(x => ({
+    let response = await this.$axios.get("/get/teams");
+    this.teams = response.data.results.map(x => ({
       ...x,
       active: false,
       name: `${x.shortname} ${x.teamname}`,
-      __id: x.team_id
+      __id: `team_${x.team_id}`
     }));
 
-    const {
-      data: { typeResults }
-    } = await this.$$axios.get("/get/gametypes");
-    this.gametypes = typeResults.map(d => ({
-      ...d,
+    response = await this.$axios.get("/get/gametypes");
+    this.gametypes = response.data.results.map(x => ({
+      ...x,
       active: false,
-      __id: d.type_id
+      __id: `type_${x.type_id}`
+    }));
+
+    response = await this.$axios.get("/get/destinations");
+    this.destinations = response.data.results.map(x => ({
+      ...x,
+      active: false,
+      __id: `destination_${x.destination_id}`
     }));
   }
 };

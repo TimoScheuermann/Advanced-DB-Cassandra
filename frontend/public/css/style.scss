@@ -421,7 +421,8 @@ a {
   }
 }
 
-.error {
+.error,
+.info {
   display: inline-block;
   color: #fc5c65;
   border: 1px solid #fc5c65;
@@ -446,5 +447,19 @@ a {
     font-weight: 800;
     margin-left: -40px;
     text-align: center;
+  }
+}
+$info-color: #ffc107;
+.info {
+  color: $info-color;
+  border-color: $info-color;
+  background: -webkit-linear-gradient(
+    left,
+    $info-color 30px,
+    transparent 30px,
+    transparent 100%
+  );
+  &:before {
+    content: "i";
   }
 }

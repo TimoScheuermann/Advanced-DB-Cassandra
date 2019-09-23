@@ -20,8 +20,6 @@ body {
 body {
   background-color: #f0f0f0;
   color: #444;
-  height: 100vh;
-  min-height: 100vh;
 }
 
 a {
@@ -486,7 +484,8 @@ a:hover {
   cursor: grabbing;
 }
 
-.error {
+.error,
+.info {
   display: inline-block;
   color: #fc5c65;
   border: 1px solid #fc5c65;
@@ -502,7 +501,8 @@ a:hover {
   margin-bottom: 20px;
 }
 
-.error:before {
+.error:before,
+.info:before {
   content: "!";
   position: absolute;
   width: 30px;
@@ -510,5 +510,15 @@ a:hover {
   font-weight: 800;
   margin-left: -40px;
   text-align: center;
+}
+
+.info {
+  color: #ffc107;
+  border-color: #ffc107;
+  background: -webkit-linear-gradient(left, #ffc107 30px, transparent 30px, transparent 100%);
+}
+
+.info:before {
+  content: "i";
 }
 /*# sourceMappingURL=style.css.map */
