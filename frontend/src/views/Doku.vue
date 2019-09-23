@@ -7,7 +7,7 @@
             <div class="team">
                 <div class="member">Nicolas Fürhaupter</div>
                 <div class="member">Jeannine Bertrand</div>
-                <div class="member" style="color: #ccc;">Tobias Essigke</div>
+                <div class="member">Tobias Essigke</div>
                 <div class="member">Timo Scheuermann</div>
             </div>
         </div>

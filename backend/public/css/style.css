@@ -1,7 +1,7 @@
 @import url("../fonts/fontfaces.css");
 @media only screen and (max-width: 778px) {
   .pdf:before {
-    content: "PDF" !important;
+    content: 'PDF' !important;
   }
   .pdf {
     margin-top: -20px;
@@ -19,15 +19,13 @@ body {
 body {
   background-color: #f0f0f0;
   color: #444;
-  height: 100vh;
-  min-height: 100vh;
 }
 
 a {
   color: #08f;
   text-decoration: none;
-  -webkit-transition: .2s ease;
-  transition: .2s ease;
+  -webkit-transition: 0.2s ease;
+  transition: 0.2s ease;
 }
 
 a:hover {
@@ -140,11 +138,11 @@ a:hover {
 }
 
 .function .example .code b:before {
-  content: "<";
+  content: '<';
 }
 
 .function .example .code b:after {
-  content: ">";
+  content: '>';
 }
 
 .function .example .exmpl a:before {
@@ -152,15 +150,15 @@ a:hover {
 }
 
 .function .example .exmpl:before {
-  content: "Sample | ";
+  content: 'Sample | ';
   color: #888;
 }
 
 ::-webkit-scrollbar {
   width: 4px;
   border-radius: 4px;
-  -webkit-transition: .2s ease;
-  transition: .2s ease;
+  -webkit-transition: 0.2s ease;
+  transition: 0.2s ease;
 }
 
 ::-webkit-scrollbar:hover {
@@ -175,14 +173,14 @@ a:hover {
 ::-webkit-scrollbar-thumb {
   background: #aaa;
   border-radius: 4px;
-  -webkit-transition: .2s ease;
-  transition: .2s ease;
+  -webkit-transition: 0.2s ease;
+  transition: 0.2s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #888;
-  -webkit-transition: .2s ease;
-  transition: .2s ease;
+  -webkit-transition: 0.2s ease;
+  transition: 0.2s ease;
   cursor: -webkit-grabbing;
   cursor: grabbing;
 }
