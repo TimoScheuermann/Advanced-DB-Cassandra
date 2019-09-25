@@ -7,59 +7,61 @@ export class AppController {
 
   @Get('get/destinations')
   destinations() {
-    return {
-      results: [
-        { destination_id: 0, name: 'Home' },
-        { destination_id: 1, name: 'Away' },
-      ],
-    };
+    return [
+      { destination_id: 0, name: 'Home' },
+      { destination_id: 1, name: 'Away' },
+    ];
   }
 
   @Get('get/players')
   async players() {
-    return {
-      results: await this.appService.getQueryResults(
-        'SELECT * FROM player_info',
-      ),
-    };
+    return await this.appService.getQueryResults('SELECT * FROM player_info');
   }
 
   @Get('get/teams')
   async teams() {
-    return {
-      results: await this.appService.getQueryResults('SELECT * FROM team_info'),
-    };
+    return await this.appService.getQueryResults('SELECT * FROM team_info');
   }
 
   @Get('get/seasons')
   async seasons() {
-    return {
-      results: await this.appService.getQueryResults('SELECT * FROM inf'),
-    };
+    return [
+      { season_id: 0, name: '2010/11' },
+      { season_id: 1, name: '2011/12' },
+      { season_id: 2, name: '2012/13' },
+      { season_id: 3, name: '2013/14' },
+      { season_id: 4, name: '2014/15' },
+      { season_id: 5, name: '2015/16' },
+      { season_id: 6, name: '2016/17' },
+      { season_id: 7, name: '2017/18' },
+      { season_id: 8, name: '2018/19' },
+    ];
   }
 
   @Get('get/gametypes')
   gametypes() {
-    return {
-      results: [
-        { type_id: 0, name: 'Regular' },
-        { type_id: 1, name: 'Playoffs' },
-      ],
-    };
+    return [{ type_id: 0, name: 'Regular' }, { type_id: 1, name: 'Playoffs' }];
   }
 
   @Get('find/player/:key')
   async findPlayer(@Param('key') key: String) {
-    return {
-      firstnames: await this.appService.getQueryResults(
-        'SELECT * FROM player_info WHERE firstname=? ALLOW FILTERING',
+    let results = [];
+    key = `${key}%`;
+    results = [
+      ...results,
+      await this.appService.getQueryResults(
+        'SELECT * FROM player_info WHERE firstname LIKE ?',
         [key],
       ),
-      lastnames: await this.appService.getQueryResults(
-        'SELECT * FROM player_info WHERE lastname=? ALLOW FILTERING',
+    ];
+    results = [
+      ...results,
+      await this.appService.getQueryResults(
+        'SELECT * FROM player_info WHERE lastname LIKE ?',
         [key],
       ),
-    };
+    ];
+    return [].concat.apply([], results);
   }
 
   @Get()

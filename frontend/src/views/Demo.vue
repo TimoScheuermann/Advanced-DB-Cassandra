@@ -28,13 +28,14 @@
       </h2>
 
       <div class="filter-list">
-        <!-- <active-filter
-          v-for="(season, index) in seasons"
-          :key="index"
+        <active-filter
+          v-for="season in seasons"
+          :key="season.__id"
           category="Season"
           :title="season.name"
           :active="season.active"
-        />-->
+          @click="setActive(season.__id, 'seasons')"
+        />
         <active-filter
           v-for="team in teams"
           :key="team.__id"
@@ -111,16 +112,17 @@
 
       <div class="content">
         <div class="paragraph" style="margin-top: 0;">
-          <!--          <div class="filters">
+          <div class="filters">
             <h3>Season</h3>
             <olap-filter
-              v-for="(season, index) in seasons"
-              :key="index"
+              v-for="season in seasons"
+              :key="season.__id"
               :title="season.name"
               :active="season.active"
+              @click="setActive(season.__id, 'seasons')"
             />
           </div>
-          -->
+
           <div class="filters">
             <h3>Team</h3>
             <olap-filter
@@ -132,7 +134,7 @@
             />
           </div>
 
-          <div class="filters" style="width: 45%; display: inline-block; margin-right: 10%">
+          <div class="filters" style="width: 49%; display: inline-block; margin-right: 2%">
             <h3>Destination</h3>
             <olap-filter
               v-for="destination in destinations"
@@ -143,7 +145,7 @@
             />
           </div>
 
-          <div class="filters" style="width: 45%; display: inline-block;">
+          <div class="filters" style="width: 49%; display: inline-block;">
             <h3>Gametype</h3>
             <olap-filter
               v-for="gametype in gametypes"
@@ -171,6 +173,7 @@
               <input
                 v-model="playerQuery"
                 type="text"
+                pattern="^[a-zA-Z]{1,20}$"
                 placeholder="z.B.: Plachta, Goc, Hecht"
                 name
                 id
@@ -187,7 +190,12 @@
               v-else-if="showQueryInfo"
               class="info"
               style="margin-top: 10px;"
-            >Bitte gib mindestens drei Zeichen ein</div>
+            >Bitte gib mindestens zwei Zeichen ein</div>
+            <div
+              v-else-if="playerResults > maxAllowedPlayerResults"
+              class="info"
+              style="margin-top: 10px;"
+            >Es wurden zu viele Spieler gefunden ({{ playerResults }}). Bitte genauer Suchen</div>
           </div>
         </div>
       </div>
@@ -208,28 +216,13 @@ export default {
     return {
       nothingFound: false,
       showQueryInfo: false,
+      playerResults: 0,
+      maxAllowedPlayerResults: 10,
       backendConnected: true,
       cassandraRunning: true,
       playerQuery: "",
       teams: [],
-      seasons: [
-        {
-          name: "2018/19",
-          active: true
-        },
-        {
-          name: "2019/20",
-          active: false
-        },
-        {
-          name: "2020/21",
-          active: false
-        },
-        {
-          name: "2021/22",
-          active: false
-        }
-      ],
+      seasons: [],
       destinations: [],
       gametypes: [],
       players: []
@@ -248,25 +241,27 @@ export default {
     async findPlayer() {
       this.nothingFound = false;
       this.showQueryInfo = false;
+      this.playerResults = 0;
 
-      if (this.playerQuery.length < 3) {
+      if (this.playerQuery.length < 2) {
         this.showQueryInfo = true;
         return;
       }
 
-      let response = await this.$axios.get(`/find/player/${this.playerQuery}`);
-      let foundPlayers = [];
+      const response = await this.$axios.get(
+        `/find/player/${this.playerQuery}`
+      );
 
-      response.data.firstnames.forEach(x => foundPlayers.push(x));
-      response.data.lastnames.forEach(x => foundPlayers.push(x));
+      this.playerResults = response.data.length;
+      if (this.playerResults > this.maxAllowedPlayerResults) return;
 
-      if (foundPlayers.length === 0) {
+      if (this.playerResults === 0) {
         this.nothingFound = true;
         this.showQueryInfo = false;
         return;
       }
 
-      foundPlayers.forEach(x => {
+      response.data.forEach(x => {
         if (this.players.findIndex(p => p.player_id === x.player_id) === -1) {
           this.players.push({
             ...x,
@@ -280,26 +275,34 @@ export default {
   },
 
   async created() {
-    let response = await this.$axios.get("/get/teams");
-    this.teams = response.data.results.map(x => ({
+    const teamResults = await this.$axios.get("/get/teams");
+    const gametypeResults = await this.$axios.get("/get/gametypes");
+    const destinationResults = await this.$axios.get("/get/destinations");
+    const seasonResults = await this.$axios.get("/get/seasons");
+
+    this.teams = teamResults.data.map(x => ({
       ...x,
       active: false,
       name: `${x.shortname} ${x.teamname}`,
       __id: `team_${x.team_id}`
     }));
 
-    response = await this.$axios.get("/get/gametypes");
-    this.gametypes = response.data.results.map(x => ({
+    this.gametypes = gametypeResults.data.map(x => ({
       ...x,
       active: false,
       __id: `type_${x.type_id}`
     }));
 
-    response = await this.$axios.get("/get/destinations");
-    this.destinations = response.data.results.map(x => ({
+    this.destinations = destinationResults.data.map(x => ({
       ...x,
       active: false,
       __id: `destination_${x.destination_id}`
+    }));
+
+    this.seasons = seasonResults.data.map(x => ({
+      ...x,
+      active: false,
+      __id: `season_${x.season_id}`
     }));
   }
 };

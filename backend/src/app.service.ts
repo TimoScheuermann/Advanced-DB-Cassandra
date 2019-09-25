@@ -31,6 +31,7 @@ export class AppService {
       const res = await this.cassyHelper(query, vars);
       return res.rows;
     } catch (error) {
+      return error;
       return new InternalServerErrorException('Fehler im Query');
     }
   }

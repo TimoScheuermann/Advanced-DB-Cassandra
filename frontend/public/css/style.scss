@@ -4,10 +4,37 @@
   .pdf:before {
     content: "PDF" !important;
   }
-  .pdf {
-    margin-top: -20px;
-    right: 30px;
+  .pdf,
+  .add {
+    right: 60px !important;
   }
+  .paragraph {
+    margin: 20px !important;
+  }
+  .navbar {
+    .items {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+  }
+}
+
+.splitter {
+  margin: 30px 0px;
+  height: 1px;
+  width: 100%;
+  background: #bbb;
+}
+.anchor {
+  position: absolute;
+  margin-top: -60px;
+}
+
+code {
+  background: #eee;
+  border-radius: 5px;
+  display: block;
+  padding: 10px;
 }
 
 html,
@@ -16,6 +43,7 @@ body {
   padding: 0;
   font-family: "SF Pro Display", sans-serif;
   -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -32,6 +60,9 @@ a {
   }
 }
 
+.white {
+  background: rgba(255, 255, 255, 0.75);
+}
 .navbar {
   z-index: 1000;
   top: 0;
@@ -41,10 +72,12 @@ a {
   color: white;
   width: 1fr;
   padding: 0px 10px;
-  height: 40px;
+  min-height: 40px;
   cursor: pointer;
+  user-select: none;
   text-align: center;
   backdrop-filter: blur(7px);
+  transition: 0.5s ease;
 
   * {
     line-height: 40px;
@@ -56,6 +89,9 @@ a {
     margin: 0 10px;
     float: left;
     color: #fff;
+    &:hover {
+      box-shadow: none !important;
+    }
   }
 
   .items {
@@ -64,35 +100,41 @@ a {
     float: right;
     display: inline-block;
 
-    .item {
-      color: white;
+    a {
+      color: #fff;
       display: inline-block;
-      opacity: 1;
-      margin: 0 10px;
+      margin: 0px 10px;
     }
-    .item:hover,
+    a:hover,
     .router-link-active {
-      opacity: 0.7;
+      color: #aaa;
+      box-shadow: inset 0px -2px #08f;
     }
   }
 }
 
 .landing {
   text-align: center;
-  margin: 100px 0px;
+  background: url("../assets/landing2.jpg");
+  background-size: cover;
+  background-position: center;
+  padding: 150px 0px;
+  margin: -50px 0px;
 
   h1,
   h2 {
     margin: 0;
     padding: 0;
+    color: #fff;
   }
 
   h1 {
     font-weight: 700;
+    text-shadow: 1px 1px 10px #444;
   }
   h2 {
     font-weight: 650;
-    color: #555;
+    color: #eee;
 
     &:before,
     &:after {
@@ -102,15 +144,89 @@ a {
   }
 }
 
+.scrollUp {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  right: 15px;
+  bottom: 15px;
+  background: #08f;
+  border-radius: 20px;
+  opacity: 0.5;
+  transition: 0.2s ease;
+  cursor: pointer;
+  &:hover {
+    opacity: 1;
+  }
+  &:active {
+    filter: brightness(110%);
+  }
+  &:before,
+  &:after {
+    width: 15px;
+    height: 4px;
+    background: #fff;
+    content: "";
+    position: absolute;
+    transform: translate(-21%, -65%) rotate(45deg);
+    top: 50%;
+    left: 50%;
+  }
+  &:before {
+    transform: translate(-76%, -65%) rotate(-45deg);
+  }
+}
+
 .paragraph {
-  background: #fff;
+  background: linear-gradient(to bottom right, #fff, #fdfdfd);
   padding: 10px 50px;
-  margin: 20px;
+  margin: 20px 60px;
   border-radius: 5px;
+  transition: 1s ease;
 
   h1 {
     text-align: center;
   }
+
+  .sections {
+    display: block;
+    border-top: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+    text-align: center;
+    padding: 10px;
+    &:before {
+      content: "Abschnitte";
+      position: absolute;
+      margin-top: -22px;
+      background: #fff;
+      padding: 0px 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-weight: 700;
+      color: #666;
+    }
+    a {
+      font-weight: 600;
+      padding: 0px 5px;
+      margin: 0px 10px;
+    }
+  }
+
+  img {
+    display: inline-block;
+    max-width: 100%;
+    border-radius: 5px;
+    box-shadow: 2px 4px 15px #ddd;
+    &[right] {
+      float: right;
+      margin-left: 10px;
+    }
+    &[left] {
+      float: left;
+      margin-right: 10px;
+    }
+  }
+
   p {
     text-align: justify;
   }
@@ -118,11 +234,11 @@ a {
   .pdf,
   .add {
     position: absolute;
-    right: 60px;
+    right: 90px;
+    margin-top: -60px;
     display: inline-block;
     background: #08f;
     color: #fff;
-    margin-top: 5px;
     font-weight: 500;
     box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
     cursor: pointer;
@@ -131,8 +247,6 @@ a {
     }
   }
   .pdf {
-    font-size: 0.5em;
-    line-height: 1em;
     border-radius: 20px;
     padding: 5px 20px;
     &:before {
@@ -142,6 +256,7 @@ a {
   .add {
     width: 30px;
     height: 30px;
+    margin-top: -5px;
     border-radius: 30px;
     &:before,
     &:after {
@@ -157,23 +272,6 @@ a {
     }
     &:after {
       transform: rotate(0deg) scale(0.6);
-    }
-  }
-
-  .team {
-    text-align: center;
-    margin-bottom: 10px;
-    user-select: none;
-
-    .member {
-      display: inline-block;
-      margin: 10px;
-      width: 200px;
-      background: #fff;
-      box-shadow: 2px 4px 10px #ccc;
-      padding: 20px;
-      font-weight: 600;
-      user-select: text;
     }
   }
 
@@ -461,5 +559,31 @@ $info-color: #ffc107;
   );
   &:before {
     content: "i";
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-weight: 700;
+  }
+}
+
+.team {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: -50px;
+  user-select: none;
+
+  .member {
+    display: inline-block;
+    margin: 10px;
+    width: 200px;
+    max-width: 100%;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    color: #ddd;
+    text-shadow: 1px 1px 10px #666;
+    padding: 20px;
+    font-weight: 600;
+    user-select: text;
+    cursor: default;
+    filter: brightness(120%);
   }
 }
