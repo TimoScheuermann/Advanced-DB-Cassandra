@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="paragraph">
-      <h1>Wie es funktioniert</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione voluptatem libero quas sint aliquid incidunt odit. Doloribus, eveniet. Nobis voluptatem tempore doloribus saepe qui perspiciatis natus illo nam? Consequuntur, magni.</p>
+    <div class="landing">
+      <h1>Demonstration</h1>
+      <h2>Cubesviewer</h2>
     </div>
 
     <div
@@ -275,35 +275,39 @@ export default {
   },
 
   async created() {
-    const teamResults = await this.$axios.get("/get/teams");
-    const gametypeResults = await this.$axios.get("/get/gametypes");
-    const destinationResults = await this.$axios.get("/get/destinations");
-    const seasonResults = await this.$axios.get("/get/seasons");
+    try {
+      const teamResults = await this.$axios.get("/get/teams");
+      const gametypeResults = await this.$axios.get("/get/gametypes");
+      const destinationResults = await this.$axios.get("/get/destinations");
+      const seasonResults = await this.$axios.get("/get/seasons");
 
-    this.teams = teamResults.data.map(x => ({
-      ...x,
-      active: false,
-      name: `${x.shortname} ${x.teamname}`,
-      __id: `team_${x.team_id}`
-    }));
+      this.teams = teamResults.data.map(x => ({
+        ...x,
+        active: false,
+        name: `${x.shortname} ${x.teamname}`,
+        __id: `team_${x.team_id}`
+      }));
 
-    this.gametypes = gametypeResults.data.map(x => ({
-      ...x,
-      active: false,
-      __id: `type_${x.type_id}`
-    }));
+      this.gametypes = gametypeResults.data.map(x => ({
+        ...x,
+        active: false,
+        __id: `type_${x.type_id}`
+      }));
 
-    this.destinations = destinationResults.data.map(x => ({
-      ...x,
-      active: false,
-      __id: `destination_${x.destination_id}`
-    }));
+      this.destinations = destinationResults.data.map(x => ({
+        ...x,
+        active: false,
+        __id: `destination_${x.destination_id}`
+      }));
 
-    this.seasons = seasonResults.data.map(x => ({
-      ...x,
-      active: false,
-      __id: `season_${x.season_id}`
-    }));
+      this.seasons = seasonResults.data.map(x => ({
+        ...x,
+        active: false,
+        __id: `season_${x.season_id}`
+      }));
+    } catch (error) {
+      this.backendConnected = false;
+    }
   }
 };
 </script>

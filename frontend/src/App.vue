@@ -1,10 +1,6 @@
 <template>
   <div id="app">
-    <div
-      class="navbar"
-      :style="`${brightNavbarRoutes.includes($route.path) && 'background: rgba(0, 0, 0, 0.6)'}`"
-      id="nav"
-    >
+    <div class="navbar" id="nav">
       <router-link class="title" to="home">NHL Stats</router-link>
 
       <div class="items">
@@ -20,22 +16,3 @@
     <router-view></router-view>
   </div>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      brightNavbarRoutes: ["/home", "/doku"]
-    };
-  },
-  mounted() {
-    /*document.addEventListener("scroll", function() {
-      if (this.brightNavbarRoutes.includes(this.$route.path)) {
-        document.getElementById("nav").style.background = `rgba(0,0,0,${
-          window.scrollY > 370 ? "0.75" : "0.25"
-        }`;
-      }
-    });*/
-  }
-};
-</script>

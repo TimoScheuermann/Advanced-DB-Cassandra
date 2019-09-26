@@ -64,6 +64,25 @@ export class AppController {
     return [].concat.apply([], results);
   }
 
+  @Get('get/goals/:teamID')
+  async getGoals(@Param('teamID') teamID: String) {
+    return await this.appService.getQueryResults(
+      'SELECT sum(goals) AS goals FROM game_teams_stats WHERE team_id=? ALLOW FILTERING',
+      [teamID],
+    );
+  }
+
+  @Get('get/goals/:teamID/:hoa')
+  async getHoAGoals(
+    @Param('teamID') teamID: String,
+    @Param('hoa') hoa: String,
+  ) {
+    return await this.appService.getQueryResults(
+      'SELECT sum(goals) AS goals FROM game_teams_stats WHERE team_id=? AND hoa=? ALLOW FILTERING',
+      [teamID, hoa],
+    );
+  }
+
   @Get()
   @Render('index.hbs')
   index() {
