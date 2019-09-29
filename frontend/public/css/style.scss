@@ -121,6 +121,7 @@ a {
   padding: 150px 0px;
   min-height: 100px;
   margin: -50px 0px;
+  user-select: none;
 
   h1,
   h2 {
@@ -184,6 +185,7 @@ a {
   margin: 20px 60px;
   border-radius: 5px;
   transition: 1s ease;
+  box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.2);
 
   h1 {
     text-align: center;
@@ -208,7 +210,6 @@ a {
     }
     a {
       font-weight: 600;
-      padding: 0px 5px;
       margin: 0px 10px;
     }
   }
@@ -417,6 +418,11 @@ a {
     background: #fff;
     z-index: 3001;
 
+    .paragraph {
+      margin-top: 0px;
+      box-shadow: none;
+    }
+
     form {
       width: 100%;
 
@@ -496,6 +502,7 @@ a {
 
 ::-webkit-scrollbar {
   width: 4px;
+  position: absolute !important;
   border-radius: 4px;
   transition: 0.2s ease;
 }
@@ -569,7 +576,6 @@ $info-color: #ffc107;
   text-align: center;
   margin-top: 20px;
   margin-bottom: -50px;
-  user-select: none;
 
   .member {
     display: inline-block;
@@ -583,7 +589,6 @@ $info-color: #ffc107;
     text-shadow: 1px 1px 10px #666;
     padding: 20px;
     font-weight: 600;
-    user-select: text;
     cursor: default;
     filter: brightness(120%);
   }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="pdf"></div>
-    <div class="scrollUp" onclick="window.scrollTo(0,0);"></div>
+    <div class="scrollUp" id="scrollUp" onclick="window.scrollTo(0,0);"></div>
 
     <div class="landing">
       <h1>Gruppenmitglieder</h1>
@@ -133,6 +133,19 @@ export default {
     this.$nextTick(function() {
       prettyPrint.prettyPrint();
     });
+
+    window.onscroll = function() {
+      const scrollUp = document.getElementById("scrollUp");
+      const height = 40;
+      if (
+        document.body.scrollTop > height ||
+        document.documentElement.scrollTop > height
+      ) {
+        scrollUp.style.display = "block";
+      } else {
+        scrollUp.style.display = "none";
+      }
+    };
   }
 };
 </script>

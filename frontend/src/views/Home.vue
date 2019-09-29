@@ -4,7 +4,7 @@
       <h1>Advanced Databases</h1>
       <h2>Cassandra</h2>
     </div>
-    <div class="paragraph" style="box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.2);">
+    <div class="paragraph">
       <h1>Erklärung</h1>
       <p>
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione suscipit animi expedita aliquam incidunt veniam, soluta quibusdam dolor

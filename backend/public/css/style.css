@@ -127,22 +127,25 @@ a:hover {
 }
 
 .function .example .code {
-  font-style: italic;
+  font-style: normal;
   font-weight: 500;
   line-height: 30px;
   height: 30px;
 }
 
+.function .example .code:before {
+  font-weight: 400;
+  content: 'Usage | ';
+  color: #888;
+}
+
 .function .example .code b {
-  color: #666;
+  color: #f5a;
+  font-weight: 600;
 }
 
 .function .example .code b:before {
-  content: '<';
-}
-
-.function .example .code b:after {
-  content: '>';
+  content: ':';
 }
 
 .function .example .exmpl a:before {

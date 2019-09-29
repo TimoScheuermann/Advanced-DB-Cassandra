@@ -2,7 +2,7 @@
   <div>
     <div class="landing">
       <h1>Demonstration</h1>
-      <h2>Cubesviewer</h2>
+      <h2>Whatever</h2>
     </div>
 
     <div
@@ -111,7 +111,7 @@
       </div>
 
       <div class="content">
-        <div class="paragraph" style="margin-top: 0;">
+        <div class="paragraph">
           <div class="filters">
             <h3>Season</h3>
             <olap-filter
@@ -206,6 +206,7 @@
 <script>
 import OlapFilter from "../components/Filter.vue";
 import ActiveFilter from "../components/ActiveFilter.vue";
+require("../helper.js");
 
 export default {
   components: {
@@ -303,6 +304,7 @@ export default {
       this.seasons = seasonResults.data.map(x => ({
         ...x,
         active: false,
+        name: `${x.season_id}`.insert(4, "/"),
         __id: `season_${x.season_id}`
       }));
     } catch (error) {

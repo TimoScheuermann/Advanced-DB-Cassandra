@@ -13,9 +13,13 @@ export class AppService {
     });
   }
 
-  private async cassyHelper(query: string, vars: any) {
+  private async cassyHelper(
+    query: string,
+    vars: (string | number)[],
+    hints: (string)[],
+  ) {
     return new Promise((resolve: (res: types.ResultSet) => void, reject) => {
-      this.client.execute(query, vars, (err, res) => {
+      this.client.execute(query, vars, { hints }, (err, res) => {
         if (err) {
           reject(err);
         }
@@ -24,18 +28,19 @@ export class AppService {
     });
   }
 
-  public async getQueryResults(query, vars = []): Promise<Object> {
+  public async getQueryResults(
+    query: string,
+    vars = [],
+    hints = [],
+  ): Promise<Object> {
     await this.client.connect();
 
     try {
-      const res = await this.cassyHelper(query, vars);
+      const res = await this.cassyHelper(query, vars, hints);
       return res.rows;
     } catch (error) {
-      return error;
+      console.log(error);
       return new InternalServerErrorException('Fehler im Query');
     }
   }
 }
-
-//const query = "SELECT * FROM inf";
-//const query = "INSERT INTO inf (num,txt) VALUES (3,'drei')";

@@ -122,20 +122,23 @@ a {
     padding: 0px 5px;
 
     .code {
-      font-style: italic;
+      font-style: normal;
       font-weight: 500;
       line-height: 30px;
       height: 30px;
 
+      &:before {
+        font-weight: 400;
+        content: 'Usage | ';
+        color: #888;
+      }
+
       b {
-        color: #666;
+        color: #f5a;
+        font-weight: 600;
 
         &:before {
-          content: '<';
-        }
-
-        &:after {
-          content: '>';
+          content: ':';
         }
       }
     }

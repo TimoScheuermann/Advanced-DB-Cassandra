@@ -133,6 +133,10 @@ a:hover {
   padding: 150px 0px;
   min-height: 100px;
   margin: -50px 0px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .landing h1,
@@ -205,6 +209,8 @@ a:hover {
   border-radius: 5px;
   -webkit-transition: 1s ease;
   transition: 1s ease;
+  -webkit-box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.2);
+          box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .paragraph h1 {
@@ -234,7 +240,6 @@ a:hover {
 
 .paragraph .sections a {
   font-weight: 600;
-  padding: 0px 5px;
   margin: 0px 10px;
 }
 
@@ -470,6 +475,12 @@ a:hover {
   z-index: 3001;
 }
 
+.overlay .content .paragraph {
+  margin-top: 0px;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
 .overlay .content form {
   width: 100%;
 }
@@ -568,6 +579,7 @@ a:hover {
 
 ::-webkit-scrollbar {
   width: 4px;
+  position: absolute !important;
   border-radius: 4px;
   -webkit-transition: 0.2s ease;
   transition: 0.2s ease;
@@ -641,10 +653,6 @@ a:hover {
   text-align: center;
   margin-top: 20px;
   margin-bottom: -50px;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
 }
 
 .team .member {
@@ -660,10 +668,6 @@ a:hover {
   text-shadow: 1px 1px 10px #666;
   padding: 20px;
   font-weight: 600;
-  -webkit-user-select: text;
-     -moz-user-select: text;
-      -ms-user-select: text;
-          user-select: text;
   cursor: default;
   -webkit-filter: brightness(120%);
           filter: brightness(120%);
