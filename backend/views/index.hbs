@@ -39,53 +39,70 @@
 <script>
 
     var functions = [
+
         // Generell
+
         "Alle Teams auslesen;localhost:3000/get/teams;localhost:3000/get/teams",
         "Alle Seasons auslesen;localhost:3000/get/seasons;localhost:3000/get/seasons",
         "Alle Spieler auslesen;localhost:3000/get/players;localhost:3000/get/players",
         "Alle Destinations auslesen;localhost:3000/get/destinations;localhost:3000/get/destinations",
         "Einen Spieler finden;localhost:3000/find/player/<b>player</b>;localhost:3000/find/player/Plachta",
         "Alle Gametypes auslesen;localhost:3000/get/gametypes;localhost:3000/get/gametypes",
+
         // All
 
-        ";localhost:3000/get/goals/total;localhost:3000/get/goals/total",
-        ";localhost:3000/get/goals/season/<b>season</b>;localhost:3000/get/goals/season/20182019",
+        "Alle Tore auslesen;localhost:3000/get/goals/total;localhost:3000/get/goals/total",
+        ";localhost:3000/get/goals/home;",
+        ";localhost:3000/get/goals/away;",
+
+        ";localhost:3000/get/goals/total/<b>P|R</b>;",
+        ";localhost:3000/get/goals/home/<b>P|R</b>;",
+        ";localhost:3000/get/goals/away/<b>P|R</b>;",
+
+        "Alle Tore einer Saison auslesen;localhost:3000/get/goals/season/<b>season</b>;localhost:3000/get/goals/season/20182019",
+        ";localhost:3000/get/goals/season/<b>season</b>/home;",
+        ";localhost:3000/get/goals/season/<b>season</b>/away;",
+
+        ";localhost:3000/get/goals/season/<b>season</b>/total/<b>P|R</b>;",
+        ";localhost:3000/get/goals/season/<b>season</b>/home/<b>P|R</b>;",
+        ";localhost:3000/get/goals/season/<b>season</b>/away/<b>P|R</b>;",
 
         // Team
 
-        ";localhost:3000/get/goals/team/<b>team</b>/total;localhost:3000/get/goals/team/16/total",
-        ";localhost:3000/get/goals/team/<b>team</b>/home;localhost:3000/get/goals/team/16/home",
-        ";localhost:3000/get/goals/team/<b>team</b>/away;localhost:3000/get/goals/team/16/away",
+        "Alle Tore eins Teams auslesen;localhost:3000/get/goals/team/<b>team</b>/total;localhost:3000/get/goals/team/16/total",
+        "Alle Heim-Tore eines Teams auslesen;localhost:3000/get/goals/team/<b>team</b>/home;localhost:3000/get/goals/team/16/home",
+        "Alle Auswärts-Tore eines Teams auslesen;localhost:3000/get/goals/team/<b>team</b>/away;localhost:3000/get/goals/team/16/away",
 
-        ";localhost:3000/get/goals/team/<b>team</b>/total/<b>P|R</b>;localhost:3000/get/goals/team/16/total/P",
-        ";localhost:3000/get/goals/team/<b>team</b>/home/<b>P|R</b>;localhost:3000/get/goals/team/16/home/R",
-        ";localhost:3000/get/goals/team/<b>team</b>/away/<b>P|R</b>;localhost:3000/get/goals/team/16/away/R",
+        "Alle Tore eines Teams während der PlayOffs/Regular-Season auslesen;localhost:3000/get/goals/team/<b>team</b>/total/<b>P|R</b>;localhost:3000/get/goals/team/16/total/P",
+        "Alle Heim-Tore eines Teams während der PlayOffs/Regular-Season auslesen;localhost:3000/get/goals/team/<b>team</b>/home/<b>P|R</b>;localhost:3000/get/goals/team/16/home/R",
+        "Alle Auswärts-Tore eines Teams während der PlayOffs/Regular-Season auslesen;localhost:3000/get/goals/team/<b>team</b>/away/<b>P|R</b>;localhost:3000/get/goals/team/16/away/R",
 
-        ";localhost:3000/get/goals/team/<b>team</b>/season/<b>season</b>/total;localhost:3000/get/goals/team/16/season/20182019/total",
-        ";localhost:3000/get/goals/team/<b>team</b>/season/<b>season</b>/home;localhost:3000/get/goals/team/16/season/20182019/home",
-        ";localhost:3000/get/goals/team/<b>team</b>/season/<b>season</b>/away;localhost:3000/get/goals/team/16/season/20182019/away",
+        "Alle Tore eines Teams während während einer Saison;localhost:3000/get/goals/team/<b>team</b>/season/<b>season</b>/total;localhost:3000/get/goals/team/16/season/20182019/total",
+        "Alle Heim-Tore eines Teams während während einer Saison;localhost:3000/get/goals/team/<b>team</b>/season/<b>season</b>/home;localhost:3000/get/goals/team/16/season/20182019/home",
+        "Alle Auswärts-Tore eines Teams während während einer Saison;localhost:3000/get/goals/team/<b>team</b>/season/<b>season</b>/away;localhost:3000/get/goals/team/16/season/20182019/away",
 
-        ";localhost:3000/get/goals/team/<b>team</b>/season/<b>season</b>/total/<b>P|R</b>;localhost:3000/get/goals/team/16/season/20182019/total/R",
-        ";localhost:3000/get/goals/team/<b>team</b>/season/<b>season</b>/home/<b>P|R</b>;localhost:3000/get/goals/team/16/season/20182019/home/P",
-        ";localhost:3000/get/goals/team/<b>team</b>/season/<b>season</b>/away/<b>P|R</b>;localhost:3000/get/goals/team/16/season/20182019/away/P",
+        "Alle Tore eines Teams während während einer Saison während der PlayOffs/Regular-Saison;localhost:3000/get/goals/team/<b>team</b>/season/<b>season</b>/total/<b>P|R</b>;localhost:3000/get/goals/team/16/season/20182019/total/R",
+        "Alle Heim-Tore eines Teams während während einer Saison während der PlayOffs/Regular-Saison;localhost:3000/get/goals/team/<b>team</b>/season/<b>season</b>/home/<b>P|R</b>;localhost:3000/get/goals/team/16/season/20182019/home/P",
+        "Alle Auswärts-Tore eines Teams während während einer Saison während der PlayOffs/Regular-Saison;localhost:3000/get/goals/team/<b>team</b>/season/<b>season</b>/away/<b>P|R</b>;localhost:3000/get/goals/team/16/season/20182019/away/P",
 
         // Player
 
-        ";localhost:3000/get/goals/player/<b>player</b>/total;",
-        ";localhost:3000/get/goals/player/<b>player</b>/home;",
-        ";localhost:3000/get/goals/player/<b>player</b>/away;",
+        "Alle Tore eines Spielers auslesen;localhost:3000/get/goals/player/<b>player</b>/total;localhost:3000/get/goals/player/8467365/total",
+        "Alle Heim-Tore eines Spielers auslesen;localhost:3000/get/goals/player/<b>player</b>/home;localhost:3000/get/goals/player/8467365/home",
+        "Alle Auswärts-Tore eines Spielers auslesen;localhost:3000/get/goals/player/<b>player</b>/away;localhost:3000/get/goals/player/8467365/away",
 
-        ";localhost:3000/get/goals/player/<b>player</b>/total/<b>P|R</b>;",
-        ";localhost:3000/get/goals/player/<b>player</b>/home/<b>P|R</b>;",
-        ";localhost:3000/get/goals/player/<b>player</b>/away/<b>P|R</b>;",
+        "Alle Tore eines Spielers während der PlayOffs/Regular-Season;localhost:3000/get/goals/player/<b>player</b>/total/<b>P|R</b>;localhost:3000/get/goals/player/8467365/total/P",
+        "Alle Heim-Tore eines Spielers während der PlayOffs/Regular-Season;localhost:3000/get/goals/player/<b>player</b>/home/<b>P|R</b>;localhost:3000/get/goals/player/8467365/home/R",
+        "Alle Auswärts-Tore eines Spielers während der PlayOffs/Regular-Season;localhost:3000/get/goals/player/<b>player</b>/away/<b>P|R</b>;localhost:3000/get/goals/player/8467365/away/R",
 
-        ";localhost:3000/get/goals/player/<b>player</b>/season/<b>season</b>/total;",
-        ";localhost:3000/get/goals/player/<b>player</b>/season/<b>season</b>/home;",
-        ";localhost:3000/get/goals/player/<b>player</b>/season/<b>season</b>/away;",
+        "Alle Tore eines Spielers während einer Saison;localhost:3000/get/goals/player/<b>player</b>/season/<b>season</b>/total;localhost:3000/get/goals/player/8467365/season/20182019/total",
+        "Alle Heim-Tore eines Spielers während einer Saison;localhost:3000/get/goals/player/<b>player</b>/season/<b>season</b>/home;localhost:3000/get/goals/player/8467365/season/20182019/home",
+        "Alle Auswärts-Tore eines Spielers während einer Saison;localhost:3000/get/goals/player/<b>player</b>/season/<b>season</b>/away;localhost:3000/get/goals/player/8467365/season/20182019/away",
 
-        ";localhost:3000/get/goals/player/<b>player</b>/season/<b>season</b>/total/<b>P|R</b>;",
-        ";localhost:3000/get/goals/player/<b>player</b>/season/<b>season</b>/home/<b>P|R</b>;",
-        ";localhost:3000/get/goals/player/<b>player</b>/season/<b>season</b>/away/<b>P|R</b>;",
+        "Alle Tore eines Spielers während einer Saison während der PlayOffs/Regular-Season;localhost:3000/get/goals/player/<b>player</b>/season/<b>season</b>/total/<b>P|R</b>;localhost:3000/get/goals/player/8467365/season/20182019/total/R",
+        "Alle Heim-Tore eines Spielers während einer Saison während der PlayOffs/Regular-Season;localhost:3000/get/goals/player/<b>player</b>/season/<b>season</b>/home/<b>P|R</b>;localhost:3000/get/goals/player/8467365/season/20182019/home/P",
+        "Alle Auswärts-Tore eines Spielers während einer Saison während der PlayOffs/Regular-Season;localhost:3000/get/goals/player/<b>player</b>/season/<b>season</b>/away/<b>P|R</b>;localhost:3000/get/goals/player/8467365/season/20182019/away/P",
+
     ];
 
     functions.forEach(func => {

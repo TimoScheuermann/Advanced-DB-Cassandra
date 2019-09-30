@@ -60,9 +60,40 @@ a {
   }
 }
 
-.white {
-  background: rgba(255, 255, 255, 0.75);
+input.apple-switch {
+  position: relative;
+  appearance: none;
+  outline: none;
+  width: 50px;
+  height: 30px;
+  background-color: #ffffff;
+  border: 1px solid #d9dadc;
+  border-radius: 50px;
+  box-shadow: inset -20px 0 0 0 #ffffff;
+  transition-duration: 0.2s;
+  transform: scale(0.8);
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: 26px;
+    height: 26px;
+    background-color: transparent;
+    border-radius: 50%;
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+  }
+  &:checked {
+    border-color: #08f;
+    box-shadow: inset 20px 0 0 0 #08f;
+    &::after {
+      left: 20px;
+      box-shadow: -2px 4px 3px rgba(0, 0, 0, 0.05);
+    }
+  }
 }
+
 .navbar {
   z-index: 1000;
   top: 0;
@@ -345,9 +376,31 @@ a {
     border-collapse: collapse;
     width: 100%;
     text-align: left;
+    margin-bottom: 5px;
+
+    th {
+      .n {
+        color: #08f;
+        &:after {
+          content: "x ";
+        }
+      }
+    }
+    th,
+    td {
+      white-space: nowrap;
+      padding: 2px 5px;
+    }
 
     tr:not(:last-child) {
       border-bottom: 1px solid #888;
+    }
+    tr {
+      background: #fff;
+      transition: 0.2s ease;
+      &:hover:not(:first-child) {
+        background: #eee;
+      }
     }
   }
 }
@@ -502,6 +555,7 @@ a {
 
 ::-webkit-scrollbar {
   width: 4px;
+  height: 4px;
   position: absolute !important;
   border-radius: 4px;
   transition: 0.2s ease;

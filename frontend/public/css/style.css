@@ -61,8 +61,48 @@ a:hover {
           box-shadow: inset 0px -1px #08f;
 }
 
-.white {
-  background: rgba(255, 255, 255, 0.75);
+input.apple-switch {
+  position: relative;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  outline: none;
+  width: 50px;
+  height: 30px;
+  background-color: #ffffff;
+  border: 1px solid #d9dadc;
+  border-radius: 50px;
+  -webkit-box-shadow: inset -20px 0 0 0 #ffffff;
+          box-shadow: inset -20px 0 0 0 #ffffff;
+  -webkit-transition-duration: 0.2s;
+          transition-duration: 0.2s;
+  -webkit-transform: scale(0.8);
+          transform: scale(0.8);
+}
+
+input.apple-switch::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 26px;
+  height: 26px;
+  background-color: transparent;
+  border-radius: 50%;
+  -webkit-box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+          box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+input.apple-switch:checked {
+  border-color: #08f;
+  -webkit-box-shadow: inset 20px 0 0 0 #08f;
+          box-shadow: inset 20px 0 0 0 #08f;
+}
+
+input.apple-switch:checked::after {
+  left: 20px;
+  -webkit-box-shadow: -2px 4px 3px rgba(0, 0, 0, 0.05);
+          box-shadow: -2px 4px 3px rgba(0, 0, 0, 0.05);
 }
 
 .navbar {
@@ -393,10 +433,35 @@ a:hover {
   border-collapse: collapse;
   width: 100%;
   text-align: left;
+  margin-bottom: 5px;
+}
+
+.paragraph table th .n {
+  color: #08f;
+}
+
+.paragraph table th .n:after {
+  content: "x ";
+}
+
+.paragraph table th,
+.paragraph table td {
+  white-space: nowrap;
+  padding: 2px 5px;
 }
 
 .paragraph table tr:not(:last-child) {
   border-bottom: 1px solid #888;
+}
+
+.paragraph table tr {
+  background: #fff;
+  -webkit-transition: 0.2s ease;
+  transition: 0.2s ease;
+}
+
+.paragraph table tr:hover:not(:first-child) {
+  background: #eee;
 }
 
 .overlay {
@@ -579,6 +644,7 @@ a:hover {
 
 ::-webkit-scrollbar {
   width: 4px;
+  height: 4px;
   position: absolute !important;
   border-radius: 4px;
   -webkit-transition: 0.2s ease;

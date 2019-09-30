@@ -34,7 +34,7 @@
       </ul>
       <h3>Geschichte</h3>
       <p>
-        <img right src="/assets/goat.jpeg" width="500" />Apache Cassandra wurde bei Facebook entwickelt, um die Suche nach Direktnachrichten in der Inbox des Benutzers zu ermöglichen.
+        <img right src="/assets/landing4.jpg" width="500" />Apache Cassandra wurde bei Facebook entwickelt, um die Suche nach Direktnachrichten in der Inbox des Benutzers zu ermöglichen.
         Damit war von Anfang an ein Klientel für die Datenbank schon festgelegt - Soziale Netzwerke. Nachdem die Datenbank dann ein Apache Incubator Projekt wurde haben auch andere große Unternehmen, unter anderem Twitter oder IBM, daran beteiligt. Apache Incubator hilft Projekten auf ihrem Weg, ein Projekt der Apache Software Foundation zu werden. Dort existiert es jetzt immer noch als Open-Source-Projekt, wird aber auch von DataStax als Lösung an Unternehmen verkauft.
       </p>
 

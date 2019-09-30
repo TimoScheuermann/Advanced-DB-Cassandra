@@ -15,15 +15,12 @@ export class AppController {
 
   @Get('get/players')
   async getPlayers() {
-    return await this.appService.getQueryResults(
-      'SELECT * FROM player_info',
-      [],
-    );
+    return await this.appService.getQueryResults('SELECT * FROM player_info');
   }
 
   @Get('get/teams')
   async getTeams() {
-    return await this.appService.getQueryResults('SELECT * FROM team_info', []);
+    return await this.appService.getQueryResults('SELECT * FROM team_info');
   }
 
   @Get('get/seasons')
@@ -78,7 +75,59 @@ export class AppController {
     );
     return goals[0];
   }
-  @Get('get/goals/season/:season')
+
+  @Get('/get/goals/home')
+  async getGoalsHome() {
+    const goals = await this.appService.getQueryResults(
+      'SELECT SUM(home_goals) AS goals FROM game',
+    );
+    return goals[0];
+  }
+
+  @Get('/get/goals/away')
+  async getGoalsAway() {
+    const goals = await this.appService.getQueryResults(
+      'SELECT SUM(away_goals) AS goals FROM game',
+    );
+    return goals[0];
+  }
+
+  @Get('/get/goals/total/:type')
+  async getGoalsTotalType(@Param('type') type: string) {
+    const away_goals = await this.appService.getQueryResults(
+      'SELECT SUM(away_goals) AS goals FROM game WHERE type=? ALLOW FILTERING',
+      [type],
+      ['text'],
+    );
+    const home_goals = await this.appService.getQueryResults(
+      'SELECT SUM(home_goals) AS goals FROM game WHERE type=? ALLOW FILTERING',
+      [type],
+      ['text'],
+    );
+    return { goals: away_goals[0].goals + home_goals[0].goals };
+  }
+
+  @Get('/get/goals/home/:type')
+  async getGoalsHomeType(@Param('type') type: string) {
+    const goals = await this.appService.getQueryResults(
+      'SELECT SUM(home_goals) AS goals FROM game WHERE type=? ALLOW FILTERING',
+      [type],
+      ['text'],
+    );
+    return goals[0];
+  }
+
+  @Get('/get/goals/away/:type')
+  async getGoalsAwayType(@Param('type') type: string) {
+    const goals = await this.appService.getQueryResults(
+      'SELECT SUM(away_goals) AS goals FROM game WHERE type=? ALLOW FILTERING',
+      [type],
+      ['text'],
+    );
+    return goals[0];
+  }
+
+  @Get('get/goals/season/:season/total')
   async getGoalsSeasonTotal(@Param('season') season: number) {
     const gameIDs = Object.values(
       await this.appService.getQueryResults(
@@ -94,10 +143,74 @@ export class AppController {
     return goals[0];
   }
 
+  @Get('/get/goals/season/:season/home')
+  async getGoalsSeasonHome(@Param('season') season: number) {
+    const goals = await this.appService.getQueryResults(
+      'SELECT SUM(home_goals) AS goals FROM game WHERE season=? ALLOW FILTERING',
+      [season],
+      ['int'],
+    );
+    return goals[0];
+  }
+
+  @Get('/get/goals/season/:season/away')
+  async getGoalsSeasonAway(@Param('season') season: number) {
+    const goals = await this.appService.getQueryResults(
+      'SELECT SUM(away_goals) AS goals FROM game WHERE season=? ALLOW FILTERING',
+      [season],
+      ['int'],
+    );
+    return goals[0];
+  }
+
+  @Get('/get/goals/season/:season/total/:type')
+  async getGoalsSeasonTotalType(
+    @Param('season') season: number,
+    @Param('type') type: string,
+  ) {
+    const gameIDs = Object.values(
+      await this.appService.getQueryResults(
+        'SELECT game_id FROM game WHERE season=? AND type=? ALLOW FILTERING',
+        [season, type],
+        ['int', 'text'],
+      ),
+    ).map(x => x.game_id);
+
+    const goals = await this.appService.getQueryResults(
+      `SELECT SUM(goals) as goals FROM game_teams_stats WHERE game_id IN (${gameIDs.toString()}) ALLOW FILTERING`,
+    );
+    return goals[0];
+  }
+
+  @Get('/get/goals/season/:season/home/:type')
+  async getGoalsSeasonHomeType(
+    @Param('season') season: number,
+    @Param('type') type: string,
+  ) {
+    const goals = await this.appService.getQueryResults(
+      'SELECT SUM(home_goals) AS goals FROM game WHERE season=? AND type=? ALLOW FILTERING',
+      [season, type],
+      ['int', 'text'],
+    );
+    return goals[0];
+  }
+
+  @Get('/get/goals/season/:season/away/:type')
+  async getGoalsSeasonAwayType(
+    @Param('season') season: number,
+    @Param('type') type: string,
+  ) {
+    const goals = await this.appService.getQueryResults(
+      'SELECT SUM(away_goals) AS goals FROM game WHERE season=? AND type=? ALLOW FILTERING',
+      [season, type],
+      ['int', 'text'],
+    );
+    return goals[0];
+  }
+
   // ===============================================================
   // Team
   // ===============================================================
-
   @Get('get/goals/team/:team/total')
   async getGoalsTeamTotal(@Param('team') team: number) {
     const goals = await this.appService.getQueryResults(

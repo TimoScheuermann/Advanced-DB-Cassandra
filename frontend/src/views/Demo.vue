@@ -2,7 +2,7 @@
   <div>
     <div class="landing">
       <h1>Demonstration</h1>
-      <h2>Whatever</h2>
+      <h2>NHL Stats</h2>
     </div>
 
     <div
@@ -75,30 +75,42 @@
     </div>
 
     <div class="paragraph">
-      <h2>Anzahl der gefundenen Tore</h2>
-
-      <table>
-        <tr>
-          <th>A</th>
-          <th>B</th>
-          <th>. . . ?</th>
-        </tr>
-        <tr>
-          <td>C</td>
-          <td>D</td>
-          <td>E</td>
-        </tr>
-        <tr>
-          <td>C</td>
-          <td>D</td>
-          <td>E</td>
-        </tr>
-        <tr>
-          <td>C</td>
-          <td>D</td>
-          <td>E</td>
-        </tr>
-      </table>
+      <h2>
+        Ergebnis
+        <div style="display: block; text-align: right;">
+          <div
+            style="display: inline-block; color: #666; font-size: .8em;"
+          >Tore der letzten {{ seasons.length }} Seasons: {{ totalGoals }}</div>
+        </div>
+      </h2>
+      <div v-if="combinations.toString().length !== 0" style="width: 100%; overflow-x: auto;">
+        <table>
+          <tr>
+            <th v-if="getActiveElements(this.seasons).length > 0">
+              <span class="n">{{ getActiveElements(this.seasons).length }}</span>Season
+            </th>
+            <th
+              v-if="getActiveElements(this.teams).length > 0 || getActiveElements(this.players).length > 0"
+            >
+              <span class="n">{{ getActiveElements(this.teams).length }}</span>Team /
+              <span class="n">{{ getActiveElements(this.players).length }}</span>Player
+            </th>
+            <th v-if="getActiveElements(this.destinations).length > 0">
+              <span class="n">{{ getActiveElements(this.destinations).length }}</span>Destination
+            </th>
+            <th v-if="getActiveElements(this.gametypes).length > 0">
+              <span class="n">{{ getActiveElements(this.gametypes).length }}</span>Gametype
+            </th>
+            <th>Tore</th>
+          </tr>
+          <tr v-for="combo in combinations" :key="combo">
+            <td v-for="name in combo" :key="name">{{ getGoals(name.name) }}</td>
+          </tr>
+        </table>
+      </div>
+      <h3
+        v-if="combinations.toString().length !== 0"
+      >Tore gesamt: {{combinations.toString().length}}</h3>
     </div>
 
     <div class="overlay" id="overlay">
@@ -221,7 +233,9 @@ export default {
       maxAllowedPlayerResults: 10,
       backendConnected: true,
       cassandraRunning: true,
+      totalGoals: null,
       playerQuery: "",
+      combinations: [],
       teams: [],
       seasons: [],
       destinations: [],
@@ -230,6 +244,82 @@ export default {
     };
   },
   methods: {
+    getActiveElements(array) {
+      if (array == null || array.length == 0) return [];
+      return array.filter(x => x.active);
+    },
+
+    updateCombos() {
+      const parts = [
+        this.getActiveElements(this.seasons),
+        this.getActiveElements(this.teams).concat(
+          this.getActiveElements(this.players)
+        ),
+        this.getActiveElements(this.destinations),
+        this.getActiveElements(this.gametypes)
+      ].filter(x => x.length > 0);
+
+      if (parts.length < 1) {
+        this.combinations = [];
+        return;
+      }
+
+      let combos;
+
+      if (parts.length == 1) combos = parts;
+      else {
+        combos = parts.reduce((a, b) =>
+          a.reduce((r, v) => r.concat(b.map(w => [].concat(v, w))), [])
+        );
+      }
+
+      this.combinations = combos.map(x =>
+        x.concat({
+          name: this.formatGoalsCall(
+            `/get/goals` +
+              x
+                .filter(y => y.__id.lastIndexOf("team_", 0) === 0)
+                .map(y => `/team/${y.team_id}`) +
+              x
+                .filter(y => y.__id.lastIndexOf("player_", 0) === 0)
+                .map(y => `/player/${y.player_id}`) +
+              x
+                .filter(y => y.__id.lastIndexOf("season_", 0) === 0)
+                .map(y => `/season/${y.season_id}`) +
+              x
+                .filter(y => y.__id.lastIndexOf("destination_", 0) === 0)
+                .map(y => `/${y.name.toLowerCase()}`) +
+              x
+                .filter(y => y.__id.lastIndexOf("type_", 0) === 0)
+                .map(y => `/${y.name[0].toLowerCase()}`)
+          )
+        })
+      );
+    },
+
+    getGoals(url) {
+      return url;
+      //if (!url.startsWith("/get/goals")) return url;
+      //return (await this.$axios.get(url))["data"].goals;
+    },
+
+    formatGoalsCall(orig) {
+      if (
+        orig.endsWith("/r") &&
+        !(orig.endsWith("/home/r") || orig.endsWith("/away/r"))
+      ) {
+        orig = orig.replace("/r", "/total/r");
+      } else if (
+        orig.endsWith("/p") &&
+        !(orig.endsWith("/home/p") || orig.endsWith("/away/p"))
+      ) {
+        orig = orig.replace("/p", "/total/p");
+      } else if (orig.match(/\d$/)) {
+        orig += "/total";
+      }
+      return orig;
+    },
+
     setActive(id, property) {
       this[property] = this[property].map(x => {
         if (x.__id === id) {
@@ -237,6 +327,7 @@ export default {
         }
         return x;
       });
+      this.updateCombos();
     },
 
     async findPlayer() {
@@ -277,6 +368,10 @@ export default {
 
   async created() {
     try {
+      this.totalGoals = (await this.$axios.get("/get/goals/total"))[
+        "data"
+      ].goals;
+
       const teamResults = await this.$axios.get("/get/teams");
       const gametypeResults = await this.$axios.get("/get/gametypes");
       const destinationResults = await this.$axios.get("/get/destinations");
@@ -284,14 +379,14 @@ export default {
 
       this.teams = teamResults.data.map(x => ({
         ...x,
-        active: false,
+        active: x.team_id == 53,
         name: `${x.shortname} ${x.teamname}`,
         __id: `team_${x.team_id}`
       }));
 
       this.gametypes = gametypeResults.data.map(x => ({
         ...x,
-        active: false,
+        active: true,
         __id: `type_${x.type_id}`
       }));
 
@@ -309,6 +404,8 @@ export default {
       }));
     } catch (error) {
       this.backendConnected = false;
+    } finally {
+      this.updateCombos();
     }
   }
 };
