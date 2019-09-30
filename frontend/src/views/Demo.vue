@@ -103,14 +103,12 @@
             </th>
             <th>Tore</th>
           </tr>
-          <tr v-for="combo in combinations" :key="combo">
-            <td v-for="name in combo" :key="name">{{ getGoals(name.name) }}</td>
+          <tr v-for="combo in combinations" :key="combo.x">
+            <td v-for="name in combo" :key="name.x">{{ name.name }}</td>
           </tr>
         </table>
       </div>
-      <h3
-        v-if="combinations.toString().length !== 0"
-      >Tore gesamt: {{combinations.toString().length}}</h3>
+      <h3 v-if="combinations.toString().length !== 0">Tore gesamt: {{ filteredGoals }}</h3>
     </div>
 
     <div class="overlay" id="overlay">
@@ -234,6 +232,7 @@ export default {
       backendConnected: true,
       cassandraRunning: true,
       totalGoals: null,
+      filteredGoals: 0,
       playerQuery: "",
       combinations: [],
       teams: [],
@@ -249,7 +248,9 @@ export default {
       return array.filter(x => x.active);
     },
 
-    updateCombos() {
+    async updateCombos() {
+      this.filteredGoals = 0;
+
       const parts = [
         this.getActiveElements(this.seasons),
         this.getActiveElements(this.teams).concat(
@@ -275,49 +276,36 @@ export default {
 
       this.combinations = combos.map(x =>
         x.concat({
-          name: this.formatGoalsCall(
-            `/get/goals` +
-              x
-                .filter(y => y.__id.lastIndexOf("team_", 0) === 0)
-                .map(y => `/team/${y.team_id}`) +
-              x
-                .filter(y => y.__id.lastIndexOf("player_", 0) === 0)
-                .map(y => `/player/${y.player_id}`) +
-              x
-                .filter(y => y.__id.lastIndexOf("season_", 0) === 0)
-                .map(y => `/season/${y.season_id}`) +
-              x
-                .filter(y => y.__id.lastIndexOf("destination_", 0) === 0)
-                .map(y => `/${y.name.toLowerCase()}`) +
-              x
-                .filter(y => y.__id.lastIndexOf("type_", 0) === 0)
-                .map(y => `/${y.name[0].toLowerCase()}`)
-          )
+          name: this.$axios
+            .get(
+              (
+                `/get/goals` +
+                x
+                  .filter(y => y.__id.startsWith("team_"))
+                  .map(y => `/team/${y.team_id}`) +
+                x
+                  .filter(y => y.__id.startsWith("player_"))
+                  .map(y => `/player/${y.player_id}`) +
+                x
+                  .filter(y => y.__id.startsWith("season_"))
+                  .map(y => `/season/${y.season_id}`) +
+                "/total" +
+                x
+                  .filter(y => y.__id.startsWith("destination_"))
+                  .map(y => `/${y.name.toLowerCase()}`) +
+                x
+                  .filter(y => y.__id.startsWith("type_"))
+                  .map(y => `/${y.name[0]}`)
+              )
+                .replace("total/home", "home")
+                .replace("total/away", "away")
+            )
+            .then(x => {
+              this.filteredGoals += x.data.goals;
+              console.log(x.config.url + " | " + x.data.goals);
+            })
         })
       );
-    },
-
-    getGoals(url) {
-      return url;
-      //if (!url.startsWith("/get/goals")) return url;
-      //return (await this.$axios.get(url))["data"].goals;
-    },
-
-    formatGoalsCall(orig) {
-      if (
-        orig.endsWith("/r") &&
-        !(orig.endsWith("/home/r") || orig.endsWith("/away/r"))
-      ) {
-        orig = orig.replace("/r", "/total/r");
-      } else if (
-        orig.endsWith("/p") &&
-        !(orig.endsWith("/home/p") || orig.endsWith("/away/p"))
-      ) {
-        orig = orig.replace("/p", "/total/p");
-      } else if (orig.match(/\d$/)) {
-        orig += "/total";
-      }
-      return orig;
     },
 
     setActive(id, property) {
