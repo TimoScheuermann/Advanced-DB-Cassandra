@@ -249,8 +249,6 @@ export default {
     },
 
     async updateCombos() {
-      this.filteredGoals = 0;
-
       const parts = [
         this.getActiveElements(this.seasons),
         this.getActiveElements(this.teams).concat(
@@ -260,52 +258,48 @@ export default {
         this.getActiveElements(this.gametypes)
       ].filter(x => x.length > 0);
 
-      if (parts.length < 1) {
-        this.combinations = [];
-        return;
-      }
-
       let combos;
-
-      if (parts.length == 1) combos = parts;
-      else {
+      if (parts.length < 2) {
+        combos = parts.map(x => x.map(y => [y])).flat();
+      } else {
         combos = parts.reduce((a, b) =>
           a.reduce((r, v) => r.concat(b.map(w => [].concat(v, w))), [])
         );
       }
 
-      this.combinations = combos.map(x =>
-        x.concat({
-          name: this.$axios
-            .get(
-              (
-                `/get/goals` +
-                x
-                  .filter(y => y.__id.startsWith("team_"))
-                  .map(y => `/team/${y.team_id}`) +
-                x
-                  .filter(y => y.__id.startsWith("player_"))
-                  .map(y => `/player/${y.player_id}`) +
-                x
-                  .filter(y => y.__id.startsWith("season_"))
-                  .map(y => `/season/${y.season_id}`) +
-                "/total" +
-                x
-                  .filter(y => y.__id.startsWith("destination_"))
-                  .map(y => `/${y.name.toLowerCase()}`) +
-                x
-                  .filter(y => y.__id.startsWith("type_"))
-                  .map(y => `/${y.name[0]}`)
-              )
-                .replace("total/home", "home")
-                .replace("total/away", "away")
+      let localFilteredGoals = 0;
+      this.combinations = await Promise.all(
+        combos.map(async x => {
+          const {
+            data: { goals }
+          } = await this.$axios.get(
+            (
+              `/get/goals` +
+              x
+                .filter(y => y.__id.startsWith("team_"))
+                .map(y => `/team/${y.team_id}`) +
+              x
+                .filter(y => y.__id.startsWith("player_"))
+                .map(y => `/player/${y.player_id}`) +
+              x
+                .filter(y => y.__id.startsWith("season_"))
+                .map(y => `/season/${y.season_id}`) +
+              "/total" +
+              x
+                .filter(y => y.__id.startsWith("destination_"))
+                .map(y => `/${y.name.toLowerCase()}`) +
+              x
+                .filter(y => y.__id.startsWith("type_"))
+                .map(y => `/${y.name[0]}`)
             )
-            .then(x => {
-              this.filteredGoals += x.data.goals;
-              console.log(x.config.url + " | " + x.data.goals);
-            })
+              .replace("total/home", "home")
+              .replace("total/away", "away")
+          );
+          localFilteredGoals += goals;
+          return [...x, { name: goals }];
         })
       );
+      this.filteredGoals = localFilteredGoals;
     },
 
     setActive(id, property) {
@@ -367,14 +361,14 @@ export default {
 
       this.teams = teamResults.data.map(x => ({
         ...x,
-        active: x.team_id == 53,
+        active: false,
         name: `${x.shortname} ${x.teamname}`,
         __id: `team_${x.team_id}`
       }));
 
       this.gametypes = gametypeResults.data.map(x => ({
         ...x,
-        active: true,
+        active: false,
         __id: `type_${x.type_id}`
       }));
 

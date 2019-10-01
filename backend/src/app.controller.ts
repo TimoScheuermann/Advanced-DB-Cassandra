@@ -70,10 +70,13 @@ export class AppController {
 
   @Get('get/goals/total')
   async getGoalsTotal() {
-    const goals = await this.appService.getQueryResults(
-      'SELECT SUM(goals) AS goals FROM game_teams_stats',
+    const away_goals = await this.appService.getQueryResults(
+      'SELECT SUM(away_goals) AS goals FROM game',
     );
-    return goals[0];
+    const home_goals = await this.appService.getQueryResults(
+      'SELECT SUM(home_goals) AS goals FROM game',
+    );
+    return { goals: away_goals[0].goals + home_goals[0].goals };
   }
 
   @Get('/get/goals/home')
