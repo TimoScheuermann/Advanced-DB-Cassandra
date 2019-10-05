@@ -7,7 +7,6 @@
 
     <div
       class="paragraph"
-      style="background: transparent;"
       v-if="!backendConnected || !cassandraRunning"
     >
       <h1>Oops!</h1>
