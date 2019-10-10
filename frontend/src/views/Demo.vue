@@ -7,12 +7,11 @@
 
     <div
       class="paragraph"
-      v-if="!backendConnected || !cassandraRunning"
+      v-if="!true"
     >
       <h1>Oops!</h1>
       <div class="error" style="position: relative; left: 50%; transform: translateX(-50%);">
-        <span v-if="!backendConnected">Es besteht keine Verbindung zum Backend</span>
-        <span v-else>Es konnte keine Verbindung zur Datenbank aufgebaut werden!</span>
+        <span>Es besteht keine Verbindung zum Backend</span>
       </div>
     </div>
 
@@ -229,7 +228,6 @@ export default {
       playerResults: 0,
       maxAllowedPlayerResults: 10,
       backendConnected: true,
-      cassandraRunning: true,
       totalGoals: null,
       filteredGoals: 0,
       playerQuery: "",
@@ -273,7 +271,7 @@ export default {
             data: { goals }
           } = await this.$axios.get(
             (
-              `/get/goals` +
+                `/get/goals` +
               x
                 .filter(y => y.__id.startsWith("team_"))
                 .map(y => `/team/${y.team_id}`) +
@@ -299,6 +297,7 @@ export default {
         })
       );
       this.filteredGoals = localFilteredGoals;
+      
     },
 
     setActive(id, property) {
@@ -348,6 +347,7 @@ export default {
   },
 
   async created() {
+    this.backendConnected = true;
     try {
       this.totalGoals = (await this.$axios.get("/get/goals/total"))[
         "data"
@@ -380,14 +380,14 @@ export default {
       this.seasons = seasonResults.data.map(x => ({
         ...x,
         active: false,
-        name: `${x.season_id}`.insert(4, "/"),
         __id: `season_${x.season_id}`
       }));
-    } catch (error) {
-      this.backendConnected = false;
-    } finally {
-      this.updateCombos();
+
     }
+     catch (error) {
+      this.backendConnected = false;
+    }
+
   }
 };
 </script>

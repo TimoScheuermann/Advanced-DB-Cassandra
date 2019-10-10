@@ -25,17 +25,14 @@ export class AppController {
 
   @Get('get/seasons')
   getSeasons() {
-    return [
-      { season_id: 20102011 },
-      { season_id: 20112012 },
-      { season_id: 20122013 },
-      { season_id: 20132014 },
-      { season_id: 20142015 },
-      { season_id: 20152016 },
-      { season_id: 20162017 },
-      { season_id: 20172018 },
-      { season_id: 20182019 },
-    ];
+    let seasons = [];
+    for (let i = 2010; i < 2019; i++) {
+      seasons.push({
+        season_id: +`${i}${i + 1}`,
+        name: `${i}/${i + 1}`,
+      });
+    }
+    return seasons;
   }
 
   @Get('get/gametypes')
@@ -402,14 +399,14 @@ export class AppController {
     //     Else map 0
     //  4. Add all up
     //
-    const goals = await Object.values(
-      await this.appService.getQueryResults(
-        'SELECT team_id, game_id, goals FROM game_skater_stats WHERE player_id=? AND goals>0 ALLOW FILTERING',
-        [player],
-        ['int'],
-      ),
-    )
-      .map(async gskater =>
+    const goals = await Promise.all(
+      Object.values(
+        await this.appService.getQueryResults(
+          'SELECT team_id, game_id, goals FROM game_skater_stats WHERE player_id=? AND goals>0 ALLOW FILTERING',
+          [player],
+          ['int'],
+        ),
+      ).map(async gskater =>
         (await this.appService.getQueryResults(
           'SELECT COUNT(*) AS hits FROM game WHERE home_team_id=? AND game_id=? ALLOW FILTERING',
           [gskater.team_id, gskater.game_id],
@@ -417,22 +414,26 @@ export class AppController {
         ))[0].hits == 1
           ? gskater.goals
           : 0,
-      )
-      .reduce(async (a, b) => (await a) + (await b));
+      ),
+    );
 
-    return { goals };
+    if (goals.length == 0) {
+      return { goals: 0 };
+    }
+
+    return { goals: goals.reduce((a, b) => a + b) };
   }
 
   @Get('get/goals/player/:player/away')
   async getGoalsPlayerAway(@Param('player') player: number) {
-    const goals = await Object.values(
-      await this.appService.getQueryResults(
-        'SELECT team_id, game_id, goals FROM game_skater_stats WHERE player_id=? AND goals>0 ALLOW FILTERING',
-        [player],
-        ['int'],
-      ),
-    )
-      .map(async gskater =>
+    const goals = await Promise.all(
+      Object.values(
+        await this.appService.getQueryResults(
+          'SELECT team_id, game_id, goals FROM game_skater_stats WHERE player_id=? AND goals>0 ALLOW FILTERING',
+          [player],
+          ['int'],
+        ),
+      ).map(async gskater =>
         (await this.appService.getQueryResults(
           'SELECT COUNT(*) AS hits FROM game WHERE away_team_id=? AND game_id=? ALLOW FILTERING',
           [gskater.team_id, gskater.game_id],
@@ -440,10 +441,14 @@ export class AppController {
         ))[0].hits == 1
           ? gskater.goals
           : 0,
-      )
-      .reduce(async (a, b) => (await a) + (await b));
+      ),
+    );
 
-    return { goals };
+    if (goals.length == 0) {
+      return { goals: 0 };
+    }
+
+    return { goals: goals.reduce((a, b) => a + b) };
   }
 
   @Get('get/goals/player/:player/total/:type')
@@ -459,7 +464,7 @@ export class AppController {
       ),
     ).map(x => x.game_id);
 
-    const goals = this.appService.getQueryResults(
+    const goals = await this.appService.getQueryResults(
       `SELECT SUM(goals) AS goals FROM game_skater_stats WHERE player_id=? AND game_id IN (${gameIDs.toString()}) ALLOW FILTERING`,
       [player],
       ['int'],
@@ -472,14 +477,14 @@ export class AppController {
     @Param('player') player: number,
     @Param('type') type: string,
   ) {
-    const goals = await Object.values(
-      await this.appService.getQueryResults(
-        'SELECT team_id, game_id, goals FROM game_skater_stats WHERE player_id=? AND goals>0 ALLOW FILTERING',
-        [player],
-        ['int'],
-      ),
-    )
-      .map(async gskater =>
+    const goals = await Promise.all(
+      Object.values(
+        await this.appService.getQueryResults(
+          'SELECT team_id, game_id, goals FROM game_skater_stats WHERE player_id=? AND goals>0 ALLOW FILTERING',
+          [player],
+          ['int'],
+        ),
+      ).map(async gskater =>
         (await this.appService.getQueryResults(
           'SELECT COUNT(*) AS hits FROM game WHERE home_team_id=? AND game_id=? AND type=? ALLOW FILTERING',
           [gskater.team_id, gskater.game_id, type],
@@ -487,10 +492,13 @@ export class AppController {
         ))[0].hits == 1
           ? gskater.goals
           : 0,
-      )
-      .reduce(async (a, b) => (await a) + (await b));
+      ),
+    );
+    if (goals.length == 0) {
+      return { goals: 0 };
+    }
 
-    return { goals };
+    return { goals: goals.reduce((a, b) => a + b) };
   }
 
   @Get('get/goals/player/:player/away/:type')
@@ -498,25 +506,29 @@ export class AppController {
     @Param('player') player: number,
     @Param('type') type: string,
   ) {
-    const goals = await Object.values(
-      await this.appService.getQueryResults(
-        'SELECT team_id, game_id, goals FROM game_skater_stats WHERE player_id=? AND goals>0 ALLOW FILTERING',
-        [player],
-        ['int'],
-      ),
-    )
-      .map(async gskater =>
+    const goals = await Promise.all(
+      Object.values(
+        await this.appService.getQueryResults(
+          'SELECT team_id, game_id, goals FROM game_skater_stats WHERE player_id=? AND goals>0 ALLOW FILTERING',
+          [player],
+          ['int'],
+        ),
+      ).map(async gskater =>
         (await this.appService.getQueryResults(
-          'SELECT COUNT(*) AS hits FROM game WHERE away_team_id=? AND game_id=? AMD type=? ALLOW FILTERING',
+          'SELECT COUNT(*) AS hits FROM game WHERE away_team_id=? AND game_id=? AND type=? ALLOW FILTERING',
           [gskater.team_id, gskater.game_id, type],
           ['int', 'int', 'text'],
         ))[0].hits == 1
           ? gskater.goals
           : 0,
-      )
-      .reduce(async (a, b) => (await a) + (await b));
+      ),
+    );
 
-    return { goals };
+    if (goals.length == 0) {
+      return { goals: 0 };
+    }
+
+    return { goals: goals.reduce((a, b) => a + b) };
   }
 
   //
@@ -534,7 +546,7 @@ export class AppController {
       ),
     ).map(x => x.game_id);
 
-    const goals = this.appService.getQueryResults(
+    const goals = await this.appService.getQueryResults(
       `SELECT SUM(goals) AS goals FROM game_skater_stats WHERE player_id=? AND game_id IN (${gameIDs.toString()}) ALLOW FILTERING`,
       [player],
       ['int'],
@@ -547,14 +559,14 @@ export class AppController {
     @Param('player') player: number,
     @Param('season') season: number,
   ) {
-    const goals = await Object.values(
-      await this.appService.getQueryResults(
-        'SELECT team_id, game_id, goals FROM game_skater_stats WHERE player_id=? AND goals>0 ALLOW FILTERING',
-        [player],
-        ['int'],
-      ),
-    )
-      .map(async gskater =>
+    const goals = await Promise.all(
+      Object.values(
+        await this.appService.getQueryResults(
+          'SELECT team_id, game_id, goals FROM game_skater_stats WHERE player_id=? AND goals>0 ALLOW FILTERING',
+          [player],
+          ['int'],
+        ),
+      ).map(async gskater =>
         (await this.appService.getQueryResults(
           'SELECT COUNT(*) AS hits FROM game WHERE home_team_id=? AND game_id=? AND season=? ALLOW FILTERING',
           [gskater.team_id, gskater.game_id, season],
@@ -562,10 +574,13 @@ export class AppController {
         ))[0].hits == 1
           ? gskater.goals
           : 0,
-      )
-      .reduce(async (a, b) => (await a) + (await b));
+      ),
+    );
+    if (goals.length == 0) {
+      return { goals: 0 };
+    }
 
-    return { goals };
+    return { goals: goals.reduce((a, b) => a + b) };
   }
 
   @Get('get/goals/player/:player/season/:season/away')
@@ -573,14 +588,14 @@ export class AppController {
     @Param('player') player: number,
     @Param('season') season: number,
   ) {
-    const goals = await Object.values(
-      await this.appService.getQueryResults(
-        'SELECT team_id, game_id, goals FROM game_skater_stats WHERE player_id=? AND goals>0 ALLOW FILTERING',
-        [player],
-        ['int'],
-      ),
-    )
-      .map(async gskater =>
+    const goals = await Promise.all(
+      Object.values(
+        await this.appService.getQueryResults(
+          'SELECT team_id, game_id, goals FROM game_skater_stats WHERE player_id=? AND goals>0 ALLOW FILTERING',
+          [player],
+          ['int'],
+        ),
+      ).map(async gskater =>
         (await this.appService.getQueryResults(
           'SELECT COUNT(*) AS hits FROM game WHERE away_team_id=? AND game_id=? AND season=? ALLOW FILTERING',
           [gskater.team_id, gskater.game_id, season],
@@ -588,17 +603,20 @@ export class AppController {
         ))[0].hits == 1
           ? gskater.goals
           : 0,
-      )
-      .reduce(async (a, b) => (await a) + (await b));
+      ),
+    );
+    if (goals.length == 0) {
+      return { goals: 0 };
+    }
 
-    return { goals };
+    return { goals: goals.reduce((a, b) => a + b) };
   }
 
   @Get('get/goals/player/:player/season/:season/total/:type')
   async getGoalsPlayerSeasonTotalType(
     @Param('player') player: number,
     @Param('season') season: number,
-    @Param('type') type: number,
+    @Param('type') type: string,
   ) {
     const gameIDs = Object.values(
       await this.appService.getQueryResults(
@@ -608,7 +626,7 @@ export class AppController {
       ),
     ).map(x => x.game_id);
 
-    const goals = this.appService.getQueryResults(
+    const goals = await this.appService.getQueryResults(
       `SELECT SUM(goals) AS goals FROM game_skater_stats WHERE player_id=? AND game_id IN (${gameIDs.toString()}) ALLOW FILTERING`,
       [player],
       ['int'],
@@ -620,16 +638,16 @@ export class AppController {
   async getGoalsPlayerSeasonHomeType(
     @Param('player') player: number,
     @Param('season') season: number,
-    @Param('type') type: number,
+    @Param('type') type: string,
   ) {
-    const goals = await Object.values(
-      await this.appService.getQueryResults(
-        'SELECT team_id, game_id, goals FROM game_skater_stats WHERE player_id=? AND goals>0 ALLOW FILTERING',
-        [player],
-        ['int'],
-      ),
-    )
-      .map(async gskater =>
+    const goals = await Promise.all(
+      Object.values(
+        await this.appService.getQueryResults(
+          'SELECT team_id, game_id, goals FROM game_skater_stats WHERE player_id=? AND goals>0 ALLOW FILTERING',
+          [player],
+          ['int'],
+        ),
+      ).map(async gskater =>
         (await this.appService.getQueryResults(
           'SELECT COUNT(*) AS hits FROM game WHERE home_team_id=? AND game_id=? AND season=? AND type=? ALLOW FILTERING',
           [gskater.team_id, gskater.game_id, season, type],
@@ -637,10 +655,13 @@ export class AppController {
         ))[0].hits == 1
           ? gskater.goals
           : 0,
-      )
-      .reduce(async (a, b) => (await a) + (await b));
+      ),
+    );
+    if (goals.length == 0) {
+      return { goals: 0 };
+    }
 
-    return { goals };
+    return { goals: goals.reduce((a, b) => a + b) };
   }
 
   @Get('get/goals/player/:player/season/:season/away/:type')
@@ -649,14 +670,14 @@ export class AppController {
     @Param('season') season: number,
     @Param('type') type: number,
   ) {
-    const goals = await Object.values(
-      await this.appService.getQueryResults(
-        'SELECT team_id, game_id, goals FROM game_skater_stats WHERE player_id=? AND goals>0 ALLOW FILTERING',
-        [player],
-        ['int'],
-      ),
-    )
-      .map(async gskater =>
+    const goals = await Promise.all(
+      Object.values(
+        await this.appService.getQueryResults(
+          'SELECT team_id, game_id, goals FROM game_skater_stats WHERE player_id=? AND goals>0 ALLOW FILTERING',
+          [player],
+          ['int'],
+        ),
+      ).map(async gskater =>
         (await this.appService.getQueryResults(
           'SELECT COUNT(*) AS hits FROM game WHERE away_team_id=? AND game_id=? AND season=? AND type=? ALLOW FILTERING',
           [gskater.team_id, gskater.game_id, season, type],
@@ -664,10 +685,13 @@ export class AppController {
         ))[0].hits == 1
           ? gskater.goals
           : 0,
-      )
-      .reduce(async (a, b) => (await a) + (await b));
+      ),
+    );
+    if (goals.length == 0) {
+      return { goals: 0 };
+    }
 
-    return { goals };
+    return { goals: goals.reduce((a, b) => a + b) };
   }
 
   //

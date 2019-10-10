@@ -19,7 +19,7 @@ export class AppService {
     hints: (string)[],
   ) {
     return new Promise((resolve: (res: types.ResultSet) => void, reject) => {
-      this.client.execute(query, vars, { hints }, (err, res) => {
+      this.client.execute(query, vars, { hints: hints }, (err, res) => {
         if (err) {
           reject(err);
         }
