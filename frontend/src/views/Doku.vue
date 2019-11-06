@@ -34,7 +34,6 @@
       </ul>
       <h3>Geschichte</h3>
       <p>
-        <img right src="/assets/landing4.jpg" width="500" />Apache Cassandra wurde bei Facebook entwickelt, um die Suche nach Direktnachrichten in der Inbox des Benutzers zu ermöglichen.
         Damit war von Anfang an ein Klientel für die Datenbank schon festgelegt - Soziale Netzwerke. Nachdem die Datenbank dann ein Apache Incubator Projekt wurde haben auch andere große Unternehmen, unter anderem Twitter oder IBM, daran beteiligt. Apache Incubator hilft Projekten auf ihrem Weg, ein Projekt der Apache Software Foundation zu werden. Dort existiert es jetzt immer noch als Open-Source-Projekt, wird aber auch von DataStax als Lösung an Unternehmen verkauft.
       </p>
 
@@ -119,7 +118,7 @@ Lakshman und Malik sehr hilfreich.  In einem großen System (mehr als 50 Gigabyt
 Wechsel von MySQL zu Cassandra eine Verbesserung des Schreibzugriffs von 300 Millisekunden auf 0,12 Millisekunden
 und beim Lesezugriff von 350 Millisekunden auf 15 Millisekunden.</p>
 
-<h2>Row Store vs Column Store:</h2>
+<h2>Row Store vs Column Store</h2>
 <p>Row Store als auch Column Store Datenbanken bieten verschiedene Vor- als auch Nachteile. Diese werden im 
 Folgenden aufgeführt und im gleichen Zug erläutert.</p>
 <p>Ein Vorteil einer Column Store Datenbank gegenüber einer Row Store Datenbank ist, dass man bei einer Column
@@ -143,7 +142,7 @@ Store Datenbanken ist dies etwas einfacher, hier muss nur der gesamte Tupel ausg
 Man sollte sich jedoch bevor man sich für eine der zwei Varianten entscheidet gut überlegen wofür man die Datenbank
 einsetzen möchte. Für unser Beispeil ist in diesem Fall eine Column Store Datenbank die bessere Wahl.</p>
 
-<h2>Wie funktioniert‘s</h2>----Nicht einfügen!
+<h2>Wie funktioniert‘s</h2>
 <p>Im Folgenden wird erläutert wie die Verarbeitung der Daten und die schlussendliche Ausgabe überhaupt funktioniert.</p>
 <p>Das Projekt besteht aus drei Teilen. Dem Frontend, dem Backend und der Cassandra Datenbank.</p> 
 <p>Was macht was?</p>
