@@ -2,13 +2,13 @@
 
 ## Datensätze laden
 
-Die Datensätze der NHL-Statistik wurden von Kaggle geladen [[https://www.kaggle.com/martinellis/nhl-game-data]](https://www.kaggle.com/martinellis/nhl-game-data%5D)(Hier laden)
+Die Datensätze der NHL-Statistik wurden von Kaggle geladen [Hier laden](https://www.kaggle.com/martinellis/nhl-game-data)
 
 
 
 ## Cassandra DB mit Hilfe von Docker aufsetzen
 
-Für das Aufsetzen der Datenbank muss das Cassandra Image vom DockerHub geladen werden [https://hub.docker.com/_/cassandra](Cassandra Image)
+Für das Aufsetzen der Datenbank muss das Cassandra Image vom DockerHub geladen werden [Cassandra Image](https://hub.docker.com/_/cassandra)
 
 Hierzu wird folgender Befehl ausgeführt:
 
